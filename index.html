@@ -72,9 +72,11 @@
     </div>
   </header>
 
-  <!-- 플로팅 + 버튼 (모바일 전용) -->
-  <a href="#/upload" class="fixed bottom-6 right-6 z-40 inline-flex h-14 w-14 items-center justify-center rounded-full bg-slate-900 text-white shadow-soft hover:bg-slate-800 lg:hidden" aria-label="업로드">
-    <span class="text-2xl leading-none">+</span>
+  <!-- 플로팅 + 버튼 (모바일 전용) → 가운데 정렬 & 더 크게 -->
+  <a href="#/upload"
+     class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 inline-flex h-20 w-20 items-center justify-center rounded-full bg-slate-900 text-white shadow-soft hover:bg-slate-800 lg:hidden"
+     aria-label="업로드">
+    <span class="text-4xl leading-none font-bold">+</span>
   </a>
 
   <!-- 메인 컨테이너 -->
@@ -153,28 +155,44 @@
     const ContainerClose = () => `</div>`;
     function pill(content){ return `<span class="inline-flex items-center rounded-full border border-slate-200 bg-white/70 px-3 py-1 text-xs font-medium text-slate-700 shadow-sm backdrop-blur">${content}</span>` }
 
-    function placeholderImage(heightClass = 'h-72', toneIdx = Math.floor(Math.random()*pastelTones.length)){
-      return `<div class="relative overflow-hidden rounded-2xl bg-gradient-to-br ${pastelTones[toneIdx]} ${heightClass}">
-        <div class="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,.06),transparent_60%),radial-gradient(circle_at_70%_80%,rgba(0,0,0,.05),transparent_60%)]"></div>
-        <div class="relative flex h-full items-center justify-center">
-          <span class="text-sm text-slate-500">이미지 자리(샘플)</span>
-        </div>
-      </div>`;
+    /* 과목별 동그라미 색상 매핑 */
+    function dotColorClass(section){
+      switch(section){
+        case '국어': return 'bg-red-500';
+        case '수학': return 'bg-blue-500';
+        case '영어': return 'bg-yellow-400';
+        case '과학': return 'bg-violet-500';
+        case '사회': return 'bg-green-500';
+        case '한국사': return 'bg-sky-400';
+        case '교양': return 'bg-gray-400';
+        case '동아리': return 'bg-orange-500';
+        case '자율/진로': return 'bg-white border border-slate-300';
+        case '기타': return 'bg-black';
+        default: return 'bg-slate-300';
+      }
+    }
+    const dotSpan = (section) =>
+      `<span class="inline-block h-2 w-2 rounded-full ${dotColorClass(section)} shrink-0"></span>`;
+
+    /* 대표 이미지 파일명 매핑: '자율/진로' → '자율,진로 대표 이미지.jfif' */
+    function representativeImage(section){
+      const name = section === '자율/진로' ? '자율,진로' : section;
+      return `${name} 대표 이미지.jfif`;
     }
 
     function sectionHeader({kicker, title, desc}){
       return `<div class="mb-8">
-        ${kicker ? `<span>${pill(`<span class="mr-2 h-2 w-2 rounded-full bg-slate-300 inline-block"></span>${kicker}`)}</span>` : ''}
+        ${kicker ? `<span>${pill(`<span class='mr-2 h-2 w-2 rounded-full bg-slate-300 inline-block'></span>${kicker}`)}</span>` : ''}
         <h2 class="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">${title}</h2>
         ${desc ? `<p class="mt-3 text-lg leading-8 text-slate-600">${desc}</p>` : ''}
-      </div>`
+      </div>`;
     }
 
     /********************** 네비게이션 ************************/
     const navDesktop = document.getElementById('nav-desktop');
     const navMobile = document.getElementById('nav-mobile');
 
-    // 소개 링크 제거, 카테고리만 가운데 정렬
+    // 소개 링크 제거, 카테고리만 가운데 정렬 + 색상 동그라미 적용
     function renderDesktopNav(){
       navDesktop.innerHTML = `
         ${NAV_STRUCTURE.map(sec => `
@@ -184,7 +202,7 @@
               <div class="grid grid-cols-2 gap-2 p-3">
                 ${sec.subs.map(sub => `
                   <a class="group flex items-center gap-2 rounded-lg border border-slate-100 bg-white p-2 text-sm text-slate-700 hover:border-slate-200 hover:bg-slate-50" href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}">
-                    <span class="inline-block h-2 w-2 rounded-full bg-slate-300 group-hover:bg-slate-400 shrink-0"></span>
+                    ${dotSpan(sec.title)}
                     ${sub}
                   </a>`).join('')}
               </div>
@@ -205,7 +223,7 @@
             <div class="mobile-panel hidden grid grid-cols-2 gap-2 pb-4">
               ${sec.subs.map(sub => `
                 <a class="group flex items-center gap-2 rounded-lg border border-slate-100 bg-white p-2 text-sm text-slate-700 hover:border-slate-200 hover:bg-slate-50" href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}">
-                  <span class="inline-block h-2 w-2 rounded-full bg-slate-300 group-hover:bg-slate-400 shrink-0"></span>
+                  ${dotSpan(sec.title)}
                   ${sub}
                 </a>`).join('')}
             </div>
@@ -246,8 +264,9 @@
         renderHome();
         return;
       }
-      const [page, a, b] = parts; // '', 'list', 'report', 'upload'
-      if(page === 'list' && a && b) return renderList(decodeSlug(a), decodeSlug(b));
+      const [page, a, b] = parts; // '', 'subject', 'list', 'report', 'upload'
+      if(page === 'subject' && a) return renderSubject(decodeSlug(a));               // ← 새 과목 선택 페이지
+      if(page === 'list' && a && b) return renderList(decodeSlug(a), decodeSlug(b)); // 세부과목 보고서 목록
       if(page === 'report' && a) return renderDetail(a);
       if(page === 'upload') return renderUpload();
       renderHome();
@@ -277,14 +296,12 @@
         </div>`
     }
 
-    // 홈 섹션 썸네일: 국어는 대표 이미지 사용
+    /* 홈 섹션: 모든 과목 대표 이미지 사용, '목록 보기'는 과목 선택 페이지로 이동 */
     function alternatingSection(sec, index){
       const left = index % 2 === 0;
-      const sampleTo = `#/list/${encodeSlug(sec.title)}/${encodeSlug(sec.subs[0])}`;
-
-      const imageBlock = (sec.title === '국어')
-        ? `<img src="국어 대표 이미지.jfif" alt="국어 대표 이미지" class="h-80 w-full object-cover rounded-2xl shadow-soft">`
-        : placeholderImage('h-80');
+      const sampleTo = `#/subject/${encodeSlug(sec.title)}`; // ← 변경: 과목 선택 페이지
+      const imgFile = representativeImage(sec.title);
+      const imageBlock = `<img src="${imgFile}" alt="${sec.title} 대표 이미지" class="h-80 w-full object-cover rounded-2xl shadow-soft">`;
 
       return `
         <div class="grid items-center gap-10 md:grid-cols-2">
@@ -303,7 +320,57 @@
             </div>
           </div>
           ${!left ? imageBlock : ''}
-        </div>`
+        </div>`;
+    }
+
+    /* 과목 선택 페이지: 세부 과목 버튼 목록 */
+    function renderSubject(section){
+      const sec = NAV_STRUCTURE.find(s => s.title === section);
+      if(!sec){
+        AppEl.innerHTML = `
+          <section class="pt-12 pb-24">${ContainerOpen()}
+            <div class="rounded-2xl border border-slate-200 p-10 text-center">
+              <p class="text-slate-600">해당 과목을 찾을 수 없습니다.</p>
+              <div class="mt-4"><a href="#/" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">홈으로</a></div>
+            </div>${ContainerClose()}
+          </section>`;
+        return;
+      }
+
+      const imgFile = representativeImage(sec.title);
+
+      AppEl.innerHTML = `
+        <section class="pt-10">
+          ${ContainerOpen()}
+            <div class="grid gap-10 md:grid-cols-[2fr,1fr] items-start">
+              <div>
+                <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">${sec.title} 세부 과목 선택</h1>
+                <p class="mt-2 text-slate-600">아래 세부 과목을 선택하면 보고서 목록 페이지로 이동합니다.</p>
+                <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  ${sec.subs.map(sub => `
+                    <a href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}"
+                       class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-800 hover:bg-slate-50 shadow-soft">
+                      ${dotSpan(sec.title)}
+                      <span>${sub}</span>
+                      <svg viewBox="0 0 24 24" class="ml-auto h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                      </svg>
+                    </a>
+                  `).join('')}
+                </div>
+              </div>
+              <aside>
+                <div class="sticky top-24 rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
+                  <img src="${imgFile}" alt="${sec.title} 대표 이미지" class="w-full h-56 object-cover rounded-xl">
+                  <div class="mt-4 text-sm text-slate-600">
+                    ${pill(sec.title)}
+                    <p class="mt-2">세부 과목을 통해 더 구체적인 보고서를 살펴보세요.</p>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          ${ContainerClose()}
+        </section>`;
     }
 
     function renderHome(){
@@ -311,14 +378,18 @@
         ${hero()}
         <section class="py-16">
           ${ContainerOpen()}
-            ${sectionHeader({kicker: '카테고리', title: '학습 보고서 컬렉션', desc: '각 교과 영역의 보고서를 모았습니다. 원하는 하위 섹션으로 이동해 목록을 살펴보세요.'})}
+            ${sectionHeader({
+              title: '학습 보고서 컬렉션',
+              desc: '각 교과 영역의 보고서를 모았습니다. 원하는 하위 섹션으로 이동해 목록을 살펴보세요.'
+            })}
             <div class="space-y-24">
               ${NAV_STRUCTURE.map((sec, idx) => alternatingSection(sec, idx)).join('')}
             </div>
           ${ContainerClose()}
-        </section>`
+        </section>`;
     }
 
+    /********************** 목록/카드 ************************/
     function renderList(section, subsection){
       const filtered = REPORTS.filter(r => r.section === section && r.subsection === subsection);
       AppEl.innerHTML = `
@@ -333,11 +404,10 @@
                 ${filtered.map(r => reportCard(r)).join('')}
               </div>`}
           ${ContainerClose()}
-        </section>`
+        </section>`;
     }
 
     function reportCard(r){
-      // 카드 썸네일은 기본 그라데이션 유지
       return `
         <a href="#/report/${r.id}" class="group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft transition hover:shadow-md">
           <div class="h-40 bg-gradient-to-br ${pastelTones[r.toneIdx]}">
@@ -351,10 +421,10 @@
               ${r.tags.slice(0,3).map(t => `<span class="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[11px] text-slate-600">#${t}</span>`).join('')}
             </div>
           </div>
-        </a>`
+        </a>`;
     }
 
-    // 상세 페이지
+    /********************** 상세 페이지 ************************/
     function renderDetail(id){
       const report = REPORTS.find(r => r.id === id);
       if(!report){
@@ -368,35 +438,22 @@
         return;
       }
 
-      const isKoreanReport1 =
-        report.section === '국어' &&
-        report.subsection === '국어' &&
-        report.id.endsWith('-1');
-
-      // 커버: 국어 보고서 1 → 대표 이미지 사용, 그 외 → 파스텔 그라데이션
-      const cover = isKoreanReport1
-        ? `
-          <div class="w-full bg-white">
-            ${ContainerOpen()}
-              <div class="py-6 sm:py-10">
-                <img src="국어 대표 이미지.jfif" alt="국어 대표 이미지"
-                     class="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-soft">
-                <div class="mt-6">
-                  ${pill(`${report.section} • ${report.subsection}`)}
-                  <h1 class="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl">${report.title}</h1>
-                  <p class="mt-2 text-slate-700">작성일 ${report.createdAt}</p>
-                </div>
+      // 상세 커버: 대표 이미지 사용 (국어 보고서1의 HWP 첨부는 제거된 상태)
+      const coverImage = representativeImage(report.section);
+      const cover = `
+        <div class="w-full bg-white">
+          ${ContainerOpen()}
+            <div class="py-6 sm:py-10">
+              <img src="${coverImage}" alt="${report.section} 대표 이미지"
+                   class="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-soft">
+              <div class="mt-6">
+                ${pill(`${report.section} • ${report.subsection}`)}
+                <h1 class="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl">${report.title}</h1>
+                <p class="mt-2 text-slate-700">작성일 ${report.createdAt}</p>
               </div>
-            ${ContainerClose()}
-          </div>`
-        : `
-          <div class="bg-gradient-to-br ${pastelTones[report.toneIdx]}">
-            ${ContainerOpen()}<div class="py-10 sm:py-16">
-              ${pill(`${report.section} • ${report.subsection}`)}
-              <h1 class="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl">${report.title}</h1>
-              <p class="mt-2 text-slate-700">작성일 ${report.createdAt}</p>
-            </div>${ContainerClose()}
-          </div>`;
+            </div>
+          ${ContainerClose()}
+        </div>`;
 
       AppEl.innerHTML = `
         ${cover}
@@ -407,14 +464,6 @@
               <p>${report.excerpt}</p>
               <h2>본문</h2>
               <p>${report.content}</p>
-              ${placeholderImage('h-72', report.toneIdx)}
-              ${isKoreanReport1 ? `
-                <h3>첨부파일</h3>
-                <a href="거울성 이성질체.hwp" download
-                   class="inline-flex items-center rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-900 hover:bg-slate-50 shadow-soft">
-                  거울성 이성질체.hwp 다운로드
-                </a>
-              ` : ``}
               <h3>결론</h3>
               <p>연구 질문에 대한 간단한 결론과 후속 탐구 방향을 제시하는 자리입니다. 실제 프로젝트 적용 시 이 부분을 대체하세요.</p>
             </article>
@@ -435,57 +484,9 @@
         </section>`;
     }
 
-    function renderHome(){
-      AppEl.innerHTML = `
-        ${hero()}
-        <section class="py-16">
-          ${ContainerOpen()}
-            ${sectionHeader({kicker: '카테고리', title: '학습 보고서 컬렉션', desc: '각 교과 영역의 보고서를 모았습니다. 원하는 하위 섹션으로 이동해 목록을 살펴보세요.'})}
-            <div class="space-y-24">
-              ${NAV_STRUCTURE.map((sec, idx) => alternatingSection(sec, idx)).join('')}
-            </div>
-          ${ContainerClose()}
-        </section>`
-    }
-
-    /********************** 목록/카드 ************************/
-    function renderList(section, subsection){
-      const filtered = REPORTS.filter(r => r.section === section && r.subsection === subsection);
-      AppEl.innerHTML = `
-        <section class="pt-12 pb-24">
-          ${ContainerOpen()}
-            ${sectionHeader({kicker: section, title: `${subsection} 보고서 목록`, desc: `${section} > ${subsection} 카테고리의 보고서 프리뷰입니다.`})}
-            ${filtered.length === 0 ? `
-              <div class="rounded-2xl border border-dashed border-slate-300 p-12 text-center">
-                <p class="text-slate-600">아직 등록된 보고서가 없습니다. 곧 업데이트될 예정입니다.</p>
-              </div>` : `
-              <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                ${filtered.map(r => reportCard(r)).join('')}
-              </div>`}
-          ${ContainerClose()}
-        </section>`
-    }
-
-    function reportCard(r){
-      return `
-        <a href="#/report/${r.id}" class="group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft transition hover:shadow-md">
-          <div class="h-40 bg-gradient-to-br ${pastelTones[r.toneIdx]}">
-            <div class="h-full w-full bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,.06),transparent_60%),radial-gradient(circle_at_70%_80%,rgba(0,0,0,.05),transparent_60%)] opacity-40"></div>
-          </div>
-          <div class="p-4">
-            <div class="flex items-center gap-2 text-xs text-slate-500"><span>${r.section}</span><span>•</span><span>${r.subsection}</span></div>
-            <h3 class="mt-2 text-base font-semibold text-slate-900 group-hover:underline">${r.title}</h3>
-            <p class="mt-2 text-sm text-slate-600">${r.excerpt}</p>
-            <div class="mt-3 flex flex-wrap gap-2">
-              ${r.tags.slice(0,3).map(t => `<span class="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[11px] text-slate-600">#${t}</span>`).join('')}
-            </div>
-          </div>
-        </a>`
-    }
-
     /********************** 업로드 페이지 ************************/
     function renderUpload(){
-      window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform";
+      window.location.href = "https://forms.gle/네_구글폼_링크";
     }
 
     // 초기 진입
