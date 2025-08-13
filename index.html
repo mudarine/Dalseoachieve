@@ -341,8 +341,9 @@
 
     /********************** 페이지 ************************/
     function hero(){
+      /* ✅ 배경 그대로, 아래쪽 패딩만 늘려 자연스럽게 확장 */
       return `
-        <div class="relative isolate overflow-hidden bg-gradient-to-b from-white to-slate-50 pt-12 sm:pt-20">
+        <div class="relative isolate overflow-hidden bg-gradient-to-b from-white to-slate-50 pt-12 sm:pt-20 pb-16 sm:pb-28">
           ${ContainerOpen()}
             <div class="w-full max-w-none">
               <h1 class="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">
@@ -355,7 +356,7 @@
           ${ContainerClose()}
 
           <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl">
-            <div class="relative left-1/2 aspect-[1155/678] w-[36rem] -translate-x-1/2 bg-gradient-to-tr from-sky-100 to-indigo-100 opacity-70"
+            <div class="relative left-1/2 aspect-[1155/678] w-[40rem] sm:w-[48rem] -translate-x-1/2 bg-gradient-to-tr from-sky-100 to-indigo-100 opacity-70"
                  style="clip-path: polygon(74% 44%, 100% 61%, 97% 26%, 83% 0%, 58% 7%, 44% 26%, 30% 47%, 18% 66%, 0% 53%, 3% 87%, 30% 100%, 60% 100%, 91% 85%);"></div>
           </div>
         </div>`
