@@ -28,9 +28,9 @@
     @media (min-width: 1024px){ .container-pad{ padding-left: 2rem; padding-right: 2rem; } }
     .shadow-soft { box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 10px 30px rgba(0,0,0,.06);}
 
-    /* ✅ 모바일 + 버튼: 뷰포트에 맞춰 자동 크기 조절 & 정중앙 정렬 */
-    .btn-fab { width: clamp(56px, 14vw, 80px); height: clamp(56px, 14vw, 80px); }
-    .btn-fab-icon { font-size: clamp(28px, 7vw, 40px); line-height: 1; }
+    /* ✅ 모바일 + 버튼: 더 작게 & 정중앙 유지 (반응형) */
+    .btn-fab { width: clamp(44px, 12vw, 72px); height: clamp(44px, 12vw, 72px); }
+    .btn-fab-icon { font-size: clamp(22px, 6vw, 36px); line-height: 1; }
   </style>
 </head>
 <body class="bg-white text-slate-900">
@@ -78,7 +78,7 @@
     </div>
   </header>
 
-  <!-- ✅ 플로팅 + 버튼 (모바일): 오른쪽 아래 & 반응형 크기 -->
+  <!-- ✅ 플로팅 + 버튼 (모바일): 오른쪽 아래 & 더 작게 -->
   <a href="https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform"
      target="_blank" rel="noopener"
      class="fixed bottom-6 right-6 z-40 inline-flex items-center justify-center rounded-full bg-slate-900 text-white shadow-soft hover:bg-slate-800 lg:hidden btn-fab"
@@ -195,25 +195,22 @@
 
     /* 과학 기본 그라데이션 단계(연 → 진) */
     const sciGradients = [
-      'linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%)', // 매우 연함
+      'linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%)',
       'linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%)',
       'linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%)',
       'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
       'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
       'linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)',
       'linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%)',
-      'linear-gradient(135deg, #5b21b6 0%, #4c1d95 100%)'  // 진함
+      'linear-gradient(135deg, #5b21b6 0%, #4c1d95 100%)'
     ];
 
-    /* ✅ 요청사항 2: 과학 ‘2’과목 페어링 (같은 보라 계열, 농도 차이로 구분)
-       - A페어: 물리학2(라이트) ↔ 생명과학2(다크)
-       - B페어: 화학2(라이트) ↔ 지구과학2(다크)
-    */
+    /* ✅ 과학 ‘2’과목 페어링 (같은 계열, 농도 차이로 구분) */
     const sciencePairGradient = {
-      '물리학2':   'linear-gradient(135deg, #e9d5ff 0%, #a78bfa 100%)', // 보라 라이트
-      '생명과학2': 'linear-gradient(135deg, #c4b5fd 0%, #7c3aed 100%)', // 보라 다크
-      '화학2':     'linear-gradient(135deg, #ddd6fe 0%, #8b5cf6 100%)', // 보라 라이트(다른 단계)
-      '지구과학2': 'linear-gradient(135deg, #b39afc 0%, #5b21b6 100%)'  // 보라 다크(다른 단계)
+      '물리학2':   'linear-gradient(135deg, #e9d5ff 0%, #a78bfa 100%)',
+      '생명과학2': 'linear-gradient(135deg, #c4b5fd 0%, #7c3aed 100%)',
+      '화학2':     'linear-gradient(135deg, #ddd6fe 0%, #8b5cf6 100%)',
+      '지구과학2': 'linear-gradient(135deg, #b39afc 0%, #5b21b6 100%)'
     };
 
     function getSubIndex(section, subsection){
@@ -223,7 +220,6 @@
       return Math.max(0, idx);
     }
 
-    /* ✅ 섹션/세부과목에 따른 동그라미 생성 (과학은 그라데이션, 2과목 페어별 특별 처리) */
     function dotSpan(section, idx = 0, subsection = null){
       if(section === '과학'){
         const custom = subsection && sciencePairGradient[subsection];
@@ -240,9 +236,10 @@
       </span>`;
     }
 
+    /* ✅ 대표 이미지 파일 확장자 .jpg 로 통일 */
     function representativeImage(section){
       const name = section === '자율/진로' ? '자율,진로' : section;
-      return `${name} 대표 이미지.jfif`;
+      return `${name} 대표 이미지.jpg`;
     }
 
     function sectionHeader({kicker, title, desc}){
@@ -360,15 +357,13 @@
         </div>`
     }
 
-    /* ✅ 메인 섹션: 모바일에서는 항상 '이미지 먼저' → '설명' 순서 */
+    /* 메인 섹션: 모바일에서는 이미지 먼저, 그 다음 설명 */
     function alternatingSection(sec, index){
       const left = index % 2 === 0;
       const sampleTo = `#/subject/${encodeSlug(sec.title)}`;
       const imgFile = representativeImage(sec.title);
       const imageBlock = `<img src="${imgFile}" alt="${sec.title} 대표 이미지" class="h-80 w-full object-cover rounded-2xl shadow-soft">`;
 
-      // 모바일(default) order: 이미지(1) -> 텍스트(2)
-      // 데스크톱(md~): 좌우 교차
       const imgOrder  = left ? 'order-1 md:order-1' : 'order-1 md:order-2';
       const textOrder = left ? 'order-2 md:order-2' : 'order-2 md:order-1';
 
