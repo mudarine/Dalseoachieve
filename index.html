@@ -6,7 +6,7 @@
   <title>기록의 전당</title>
   <meta name="description" content="Caladan Bio 스타일의 넓은 여백, 큰 제목, 파스텔 톤, 좌우 교차 레이아웃을 적용한 학습 보고서 아카이브." />
 
-  <!-- ✅ 파비콘: 검은 그라데이션 둥근 사각형 -->
+  <!-- 파비콘: 검은 그라데이션 둥근 사각형 -->
   <link rel="icon" type="image/svg+xml"
         href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='%230f172a'/><stop offset='1' stop-color='%23334155'/></linearGradient></defs><rect x='8' y='8' width='48' height='48' rx='12' fill='url(%23g)'/></svg>">
 
@@ -32,7 +32,7 @@
     @media (min-width: 1024px){ .container-pad{ padding-left: 2rem; padding-right: 2rem; } }
     .shadow-soft { box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 10px 30px rgba(0,0,0,.06);}
 
-    /* ✅ 모바일 + 버튼: 더 작게 & 정중앙 유지 (반응형) */
+    /* 모바일 + 버튼: 작게 & 정중앙 유지 (반응형) */
     .btn-fab { width: clamp(36px, 10vw, 56px); height: clamp(36px, 10vw, 56px); }
     .btn-fab-icon { font-size: clamp(18px, 5vw, 26px); line-height: 1; }
   </style>
@@ -53,12 +53,17 @@
              class="hidden lg:flex lg:flex-row lg:items-center lg:gap-6 whitespace-nowrap absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         </nav>
 
-        <!-- 우: 데스크톱 파일 업로드 버튼 (구글 폼 직링크) -->
+        <!-- 우: 데스크톱 버튼들 -->
         <div class="hidden lg:flex items-center">
           <a href="https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform"
              target="_blank" rel="noopener"
              class="inline-flex h-10 items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800">
              파일 업로드
+          </a>
+          <a href="https://open.kakao.com/o/gmPOv7Lh"
+             target="_blank" rel="noopener"
+             class="ml-2 inline-flex h-10 items-center rounded-xl bg-amber-400 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm hover:bg-amber-500">
+             오픈채팅
           </a>
         </div>
 
@@ -73,16 +78,23 @@
     <div id="mobile-drawer" class="hidden border-t border-slate-200 bg-white lg:hidden">
       <div class="mx-auto w-full max-w-7xl container-pad py-4">
         <div id="nav-mobile" class="space-y-1"></div>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform"
-           target="_blank" rel="noopener"
-           class="mt-3 inline-flex h-10 items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800">
-           파일 업로드
-        </a>
+        <div class="mt-3 flex items-center gap-2">
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform"
+             target="_blank" rel="noopener"
+             class="inline-flex h-10 items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 flex-1 justify-center">
+             파일 업로드
+          </a>
+          <a href="https://open.kakao.com/o/gmPOv7Lh"
+             target="_blank" rel="noopener"
+             class="inline-flex h-10 items-center rounded-xl bg-amber-400 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm hover:bg-amber-500 flex-1 justify-center">
+             오픈채팅
+          </a>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- ✅ 플로팅 + 버튼 (모바일): 오른쪽 아래 & 더 작게 -->
+  <!-- 플로팅 + 버튼 (모바일) -->
   <a href="https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform"
      target="_blank" rel="noopener"
      class="fixed bottom-6 right-6 z-40 inline-flex items-center justify-center rounded-full bg-slate-900 text-white shadow-soft hover:bg-slate-800 lg:hidden btn-fab"
@@ -108,7 +120,7 @@
   </footer>
   <script>
     /********************** 설정 ************************/
-    const OPEN_CHAT_URL = 'https://open.kakao.com/o/your-openchat-id';
+    const OPEN_CHAT_URL = 'https://open.kakao.com/o/gmPOv7Lh';
     const UPLOAD_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform';
 
     /********************** 데이터 ************************/
@@ -161,7 +173,7 @@
     }
     const REPORTS = buildSampleReports();
 
-    /* 🔧 특수 케이스: 과학 > 화학1 > 보고서 1 커스텀 */
+    /* 🔧 특수 커스텀 1: 과학 > 화학1 > 보고서 1 */
     (function customizeChem1Report1(){
       const target = REPORTS.find(r =>
         r.section === '과학' && r.subsection === '화학1' && /-1$/.test(r.id)
@@ -177,6 +189,29 @@
           hideHeadings: true
         };
       }
+    })();
+
+    /* 🔧 특수 커스텀 2: 기타 > 창의융합과제연구 > 보고서 1  */
+    (function customizeCreativeConvergence1(){
+      const report = REPORTS.find(r =>
+        r.section === '기타' && r.subsection === '창의융합과제연구' && /-1$/.test(r.id)
+      );
+      if(!report) return;
+
+      report.title   = '인공지능의 의약 및 화학공학 분야에서의 혁신';
+      report.excerpt = '30618 최지민 선배가 창의융합과제연구 과목에서 작성했던 활동보고서입니다.';
+      report._custom = {
+        type: 'aiinsight',
+        dateDisplay: '25년 6월 20일',
+        /* ✅ 요청: 요약/본문 헤딩 제거, 동일 문장 1번만 노출 */
+        singleTextOnly: true,
+        text: '30618 최지민 선배가 창의융합과제연구 과목에서 작성했던 활동보고서입니다.',
+        pages: Array.from({length: 37}, (_, i) =>
+          `AI Insight - 인공지능의 의약 및 화학공학 분야에서의 혁신 - 최지민_page-${String(i+1).padStart(4,'0')}.jpg`
+        ),
+        hideHeadings: true,
+        omitConclusion: true
+      };
     })();
     /********************** 공통 뷰 유틸 ************************/
     const AppEl = document.getElementById('app');
@@ -197,7 +232,7 @@
       '기타':      ['bg-neutral-200','bg-neutral-300','bg-neutral-400','bg-neutral-500','bg-neutral-600','bg-neutral-700','bg-neutral-800','bg-neutral-900'],
     };
 
-    /* 과학 기본 그라데이션 단계(연 → 진) */
+    /* 과학 기본 그라데이션(연 → 진) + 2과목 페어링 */
     const sciGradients = [
       'linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%)',
       'linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%)',
@@ -208,13 +243,18 @@
       'linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%)',
       'linear-gradient(135deg, #5b21b6 0%, #4c1d95 100%)'
     ];
-
-    /* 과학 ‘2’과목 페어링 (같은 계열, 농도 차이로 구분) */
     const sciencePairGradient = {
       '물리학2':   'linear-gradient(135deg, #e9d5ff 0%, #a78bfa 100%)',
       '생명과학2': 'linear-gradient(135deg, #c4b5fd 0%, #7c3aed 100%)',
       '화학2':     'linear-gradient(135deg, #ddd6fe 0%, #8b5cf6 100%)',
       '지구과학2': 'linear-gradient(135deg, #b39afc 0%, #5b21b6 100%)'
+    };
+
+    /* ✅ 새 보고서 기본 상세 표시 정책 */
+    const DEFAULT_DETAIL_OPTIONS = {
+      hideHeadings: true,    // '요약', '본문' 헤딩 숨김
+      hideBodyText: true,    // 본문 텍스트(요약/본문 단락) 숨김
+      omitConclusion: true   // 결론 숨김
     };
 
     function getSubIndex(section, subsection){
@@ -240,7 +280,7 @@
       </span>`;
     }
 
-    /* 대표 이미지: 확장자 .jpg */
+    /* 대표 이미지 파일명(.jpg) */
     function representativeImage(section){
       const name = section === '자율/진로' ? '자율,진로' : section;
       return `${name} 대표 이미지.jpg`;
@@ -333,7 +373,7 @@
       const [page, a, b] = parts; // '', 'subject', 'list', 'report', 'upload'
       if(page === 'subject' && a) return renderSubject(decodeSlug(a));
       if(page === 'list' && a && b) return renderList(decodeSlug(a), decodeSlug(b));
-      if(page === 'report' && a) return renderDetail(a);
+      if(page === 'report' && a) return renderDetail(a);  /* ✅ 괄호 오류 수정 */
       if(page === 'upload') return renderUpload();
       renderHome();
     }
@@ -341,7 +381,6 @@
 
     /********************** 페이지 ************************/
     function hero(){
-      /* ✅ 배경 그대로, 아래쪽 패딩만 늘려 자연스럽게 확장 */
       return `
         <div class="relative isolate overflow-hidden bg-gradient-to-b from-white to-slate-50 pt-12 sm:pt-20 pb-16 sm:pb-28">
           ${ContainerOpen()}
@@ -362,7 +401,7 @@
         </div>`
     }
 
-    /* 메인 섹션: 모바일에서는 이미지 먼저, 그 다음 설명 */
+    /* 메인 섹션 */
     function alternatingSection(sec, index){
       const left = index % 2 === 0;
       const sampleTo = `#/subject/${encodeSlug(sec.title)}`;
@@ -512,8 +551,10 @@
 
       const coverImage   = representativeImage(report.section);
       const subIdx       = getSubIndex(report.section, report.subsection);
-      const isChem1Custom = report.section === '과학' && report.subsection === '화학1' && /-1$/.test(report.id) && report._custom;
-      const displayDate   = isChem1Custom ? report._custom.dateDisplay : report.createdAt;
+      const hasCustom    = !!report._custom;
+      const isChem1Custom = hasCustom && report.section === '과학' && report.subsection === '화학1' && /-1$/.test(report.id) && !report._custom.pages;
+      const isAIInsight  = hasCustom && report.section === '기타' && report.subsection === '창의융합과제연구' && /-1$/.test(report.id) && Array.isArray(report._custom.pages);
+      const displayDate  = hasCustom ? (report._custom.dateDisplay || report.createdAt) : report.createdAt;
 
       const cover = `
         <div class="w-full bg-white">
@@ -530,25 +571,56 @@
           ${ContainerClose()}
         </div>`;
 
+      let articleHtml = '';
+
+      if(isChem1Custom){
+        // 화학1: 헤딩 없이 문장 + 이미지 1장
+        articleHtml = `
+          <p>${report._custom.summary}</p>
+          <img src="${report._custom.image}" alt="거울성 이성질체 이미지" class="w-full h-auto rounded-2xl shadow-soft mt-6">`;
+      } else if(isAIInsight){
+        // ✅ 창의융합과제연구: 동일 문장 1번만 + 이미지 37장 (헤딩 제거)
+        const oneLine = report._custom.text;
+        articleHtml = `
+          <p>${oneLine}</p>
+          <div class="mt-6 space-y-6">
+            ${report._custom.pages.map(src => `
+              <img src="${src}" alt="AI Insight 보고서 페이지 이미지" class="w-full h-auto rounded-2xl shadow-soft">`
+            ).join('')}
+          </div>`;
+      } else {
+        // 기본(새 보고서 정책 적용)
+        if(!DEFAULT_DETAIL_OPTIONS.hideBodyText){
+          articleHtml = `
+            ${DEFAULT_DETAIL_OPTIONS.hideHeadings ? '' : '<h2>요약</h2>'}
+            <p>${report.excerpt}</p>
+            ${DEFAULT_DETAIL_OPTIONS.hideHeadings ? '' : '<h2>본문</h2>'}
+            <p>${report.content}</p>
+            ${DEFAULT_DETAIL_OPTIONS.omitConclusion ? '' : `
+              <h3>결론</h3>
+              <p>연구 질문에 대한 간단한 결론과 후속 탐구 방향을 제시하는 자리입니다. 실제 프로젝트 적용 시 이 부분을 대체하세요.</p>
+            `}`;
+        } else {
+          articleHtml = ``;
+        }
+      }
+
+      // 커스텀 후처리(필요 시)
+      if(hasCustom && report._custom.hideHeadings){
+        articleHtml = articleHtml
+          .replace(/<h2>요약<\/h2>/g, '')
+          .replace(/<h2>본문<\/h2>/g, '');
+      }
+      if(hasCustom && report._custom.omitConclusion){
+        articleHtml = articleHtml.replace(/<h3>결론<\/h3>[\s\S]*?<\/p>/, '');
+      }
+
       AppEl.innerHTML = `
         ${cover}
         <section class="py-12">
           ${ContainerOpen()}<div class="grid gap-12 lg:grid-cols-[2fr,1fr]">
             <article class="prose max-w-none prose-slate">
-              ${isChem1Custom
-                ? `
-                  <p>${report._custom.summary}</p>
-                  <img src="${report._custom.image}" alt="거울성 이성질체 이미지" class="w-full h-auto rounded-2xl shadow-soft mt-6">
-                `
-                : `
-                  <h2>요약</h2>
-                  <p>${report.excerpt}</p>
-                  <h2>본문</h2>
-                  <p>${report.content}</p>
-                  <h3>결론</h3>
-                  <p>연구 질문에 대한 간단한 결론과 후속 탐구 방향을 제시하는 자리입니다. 실제 프로젝트 적용 시 이 부분을 대체하세요.</p>
-                `
-              }
+              ${articleHtml}
             </article>
             <aside>
               <div class="sticky top-24 rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
