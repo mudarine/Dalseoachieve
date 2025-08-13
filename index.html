@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Report Studio — Caladan Style (HTML)</title>
+  <title>기록의 전당</title>
   <meta name="description" content="Caladan Bio 스타일의 넓은 여백, 큰 제목, 파스텔 톤, 좌우 교차 레이아웃을 적용한 학습 보고서 아카이브." />
 
   <!-- TailwindCSS CDN -->
@@ -27,6 +27,10 @@
     @media (min-width: 640px){ .container-pad{ padding-left: 1.5rem; padding-right: 1.5rem; } }
     @media (min-width: 1024px){ .container-pad{ padding-left: 2rem; padding-right: 2rem; } }
     .shadow-soft { box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 10px 30px rgba(0,0,0,.06);}
+
+    /* ✅ 모바일 + 버튼: 뷰포트에 맞춰 자동 크기 조절 & 정중앙 정렬 */
+    .btn-fab { width: clamp(56px, 14vw, 80px); height: clamp(56px, 14vw, 80px); }
+    .btn-fab-icon { font-size: clamp(28px, 7vw, 40px); line-height: 1; }
   </style>
 </head>
 <body class="bg-white text-slate-900">
@@ -45,9 +49,10 @@
              class="hidden lg:flex lg:flex-row lg:items-center lg:gap-6 whitespace-nowrap absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
         </nav>
 
-        <!-- 우: 데스크톱 파일 업로드 버튼 -->
+        <!-- 우: 데스크톱 파일 업로드 버튼 (구글 폼 직링크) -->
         <div class="hidden lg:flex items-center">
-          <a href="#/upload"
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform"
+             target="_blank" rel="noopener"
              class="inline-flex h-10 items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800">
              파일 업로드
           </a>
@@ -64,7 +69,8 @@
     <div id="mobile-drawer" class="hidden border-t border-slate-200 bg-white lg:hidden">
       <div class="mx-auto w-full max-w-7xl container-pad py-4">
         <div id="nav-mobile" class="space-y-1"></div>
-        <a href="#/upload"
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform"
+           target="_blank" rel="noopener"
            class="mt-3 inline-flex h-10 items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800">
            파일 업로드
         </a>
@@ -72,11 +78,12 @@
     </div>
   </header>
 
-  <!-- 플로팅 + 버튼 (모바일 전용) → 가운데 정렬 & 더 크게 -->
-  <a href="#/upload"
-     class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 inline-flex h-20 w-20 items-center justify-center rounded-full bg-slate-900 text-white shadow-soft hover:bg-slate-800 lg:hidden"
+  <!-- ✅ 플로팅 + 버튼 (모바일): 오른쪽 아래 & 반응형 크기 -->
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform"
+     target="_blank" rel="noopener"
+     class="fixed bottom-6 right-6 z-40 inline-flex items-center justify-center rounded-full bg-slate-900 text-white shadow-soft hover:bg-slate-800 lg:hidden btn-fab"
      aria-label="업로드">
-    <span class="text-4xl leading-none font-bold">+</span>
+    <span class="btn-fab-icon font-bold" aria-hidden="true">+</span>
   </a>
 
   <!-- 메인 컨테이너 -->
@@ -89,7 +96,7 @@
         <span class="inline-block h-8 w-8 rounded-xl bg-gradient-to-br from-slate-900 to-slate-700"></span>
         <div>
           <p class="text-sm font-semibold">Report Studio</p>
-          <p class="text-xs text-slate-500">Caladan 느낌의 학습 보고서 아카이브</p>
+          <p class="text-xs text-slate-500">달서고등학교 학습 보고서 아카이브</p>
         </div>
       </div>
       <div class="text-xs text-slate-500">© 2025. HTML + Tailwind.</div>
@@ -98,6 +105,7 @@
   <script>
     /********************** 설정 ************************/
     const OPEN_CHAT_URL = 'https://open.kakao.com/o/your-openchat-id';
+    const UPLOAD_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform';
 
     /********************** 데이터 ************************/
     const NAV_STRUCTURE = [
@@ -149,12 +157,7 @@
     }
     const REPORTS = buildSampleReports();
 
-    /* 🔧 특수 케이스: 과학 > 화학1 > 보고서 1 커스텀
-       - 제목: '거울성 이성질체 탐구 보고서'
-       - 요약/목록 설명: '30618 최지민 선배…'
-       - 상세: '요약', '본문' 제목 제거, 본문에 이미지 전체 표시, 결론 제거
-       - 작성일 표기: '24년 7월 20일' (상세 페이지 전용 표시)
-    */
+    /* 🔧 특수 케이스: 과학 > 화학1 > 보고서 1 커스텀 */
     (function customizeChem1Report1(){
       const target = REPORTS.find(r =>
         r.section === '과학' && r.subsection === '화학1' && /-1$/.test(r.id)
@@ -171,25 +174,46 @@
         };
       }
     })();
-
     /********************** 공통 뷰 유틸 ************************/
     const AppEl = document.getElementById('app');
     const ContainerOpen = () => `<div class="mx-auto w-full max-w-7xl container-pad">`;
     const ContainerClose = () => `</div>`;
     const pill = (content) => `<span class="inline-flex items-center rounded-full border border-slate-200 bg-white/70 px-3 py-1 text-xs font-medium text-slate-700 shadow-sm backdrop-blur">${content}</span>`;
 
-    /* ========= 과목별 ‘연한→진한’ 팔레트 (과학: 보라계열 정렬) ========= */
+    /* ========= 과목별 색상 ========= */
     const colorScales = {
       '국어':      ['bg-rose-200','bg-rose-300','bg-rose-400','bg-rose-500','bg-rose-600','bg-rose-700','bg-rose-800','bg-rose-900'],
       '수학':      ['bg-blue-200','bg-blue-300','bg-blue-400','bg-blue-500','bg-blue-600','bg-blue-700','bg-blue-800','bg-blue-900'],
       '영어':      ['bg-amber-200','bg-amber-300','bg-amber-400','bg-amber-500','bg-amber-600','bg-amber-700','bg-amber-800','bg-amber-900'],
-      '과학':      ['bg-violet-200','bg-violet-300','bg-violet-400','bg-violet-500','bg-violet-600','bg-violet-700','bg-violet-800','bg-violet-900'],
       '사회':      ['bg-emerald-200','bg-emerald-300','bg-emerald-400','bg-emerald-500','bg-emerald-600','bg-emerald-700','bg-emerald-800','bg-emerald-900'],
       '한국사':    ['bg-sky-200','bg-sky-300','bg-sky-400','bg-sky-500','bg-sky-600','bg-sky-700','bg-sky-800','bg-sky-900'],
       '교양':      ['bg-gray-200','bg-gray-300','bg-gray-400','bg-gray-500','bg-gray-600','bg-gray-700','bg-gray-800','bg-gray-900'],
       '동아리':    ['bg-orange-200','bg-orange-300','bg-orange-400','bg-orange-500','bg-orange-600','bg-orange-700','bg-orange-800','bg-orange-900'],
       '자율/진로': ['bg-white border border-slate-200','bg-white border border-slate-300','bg-white border border-slate-400','bg-white border border-slate-500','bg-white border border-slate-600','bg-white border border-slate-700','bg-white border border-slate-800','bg-white border border-slate-900'],
       '기타':      ['bg-neutral-200','bg-neutral-300','bg-neutral-400','bg-neutral-500','bg-neutral-600','bg-neutral-700','bg-neutral-800','bg-neutral-900'],
+    };
+
+    /* 과학 기본 그라데이션 단계(연 → 진) */
+    const sciGradients = [
+      'linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%)', // 매우 연함
+      'linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%)',
+      'linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%)',
+      'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
+      'linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%)',
+      'linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%)',
+      'linear-gradient(135deg, #6d28d9 0%, #5b21b6 100%)',
+      'linear-gradient(135deg, #5b21b6 0%, #4c1d95 100%)'  // 진함
+    ];
+
+    /* ✅ 요청사항 2: 과학 ‘2’과목 페어링 (같은 보라 계열, 농도 차이로 구분)
+       - A페어: 물리학2(라이트) ↔ 생명과학2(다크)
+       - B페어: 화학2(라이트) ↔ 지구과학2(다크)
+    */
+    const sciencePairGradient = {
+      '물리학2':   'linear-gradient(135deg, #e9d5ff 0%, #a78bfa 100%)', // 보라 라이트
+      '생명과학2': 'linear-gradient(135deg, #c4b5fd 0%, #7c3aed 100%)', // 보라 다크
+      '화학2':     'linear-gradient(135deg, #ddd6fe 0%, #8b5cf6 100%)', // 보라 라이트(다른 단계)
+      '지구과학2': 'linear-gradient(135deg, #b39afc 0%, #5b21b6 100%)'  // 보라 다크(다른 단계)
     };
 
     function getSubIndex(section, subsection){
@@ -199,14 +223,20 @@
       return Math.max(0, idx);
     }
 
-    function dotSpan(section, idx = 0){
+    /* ✅ 섹션/세부과목에 따른 동그라미 생성 (과학은 그라데이션, 2과목 페어별 특별 처리) */
+    function dotSpan(section, idx = 0, subsection = null){
+      if(section === '과학'){
+        const custom = subsection && sciencePairGradient[subsection];
+        const bg = custom || sciGradients[idx % sciGradients.length];
+        return `<span class="inline-block h-2 w-2 rounded-full ring-1 ring-violet-200/60 shrink-0" style="background:${bg}"></span>`;
+      }
       const scale = colorScales[section] || ['bg-slate-300'];
       const cls = scale[idx % scale.length];
       return `<span class="inline-block h-2 w-2 rounded-full ${cls} shrink-0"></span>`;
     }
-    function pillColored(section, text, idx = 0){
+    function pillColored(section, text, idx = 0, subsection = null){
       return `<span class="inline-flex items-center rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs font-semibold text-slate-800 shadow-sm backdrop-blur">
-        ${dotSpan(section, idx)}<span class="ml-2">${text}</span>
+        ${dotSpan(section, idx, subsection)}<span class="ml-2">${text}</span>
       </span>`;
     }
 
@@ -225,7 +255,7 @@
     function sectionHeaderSubColored({section, subsection, title, desc}){
       const subIdx = getSubIndex(section, subsection);
       return `<div class="mb-8">
-        ${pillColored(section, subsection, subIdx)}
+        ${pillColored(section, subsection, subIdx, subsection)}
         <h2 class="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">${title}</h2>
         ${desc ? `<p class="mt-3 text-lg leading-8 text-slate-600">${desc}</p>` : ''}
       </div>`;
@@ -244,7 +274,7 @@
               <div class="grid grid-cols-2 gap-2 p-3">
                 ${sec.subs.map((sub, idx) => `
                   <a class="group flex items-center gap-2 rounded-lg border border-slate-100 bg-white p-2 text-sm text-slate-700 hover:border-slate-200 hover:bg-slate-50" href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}">
-                    ${dotSpan(sec.title, idx)}
+                    ${dotSpan(sec.title, idx, sub)}
                     ${sub}
                   </a>`).join('')}
               </div>
@@ -265,7 +295,7 @@
             <div class="mobile-panel hidden grid grid-cols-2 gap-2 pb-4">
               ${sec.subs.map((sub, idx) => `
                 <a class="group flex items-center gap-2 rounded-lg border border-slate-100 bg-white p-2 text-sm text-slate-700 hover:border-slate-200 hover:bg-slate-50" href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}">
-                  ${dotSpan(sec.title, idx)}
+                  ${dotSpan(sec.title, idx, sub)}
                   ${sub}
                 </a>`).join('')}
             </div>
@@ -286,7 +316,6 @@
 
     renderDesktopNav();
     renderMobileNav();
-
     // 모바일 드로어 토글
     const mobileToggle = document.getElementById('mobile-toggle');
     const mobileDrawer = document.getElementById('mobile-drawer');
@@ -316,10 +345,10 @@
           ${ContainerOpen()}
             <div class="w-full max-w-none">
               <h1 class="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">
-                시원한 여백과 큰 제목. 학습 보고서 아카이브
+                기록의 전당
               </h1>
               <p class="mt-6 text-lg leading-8 text-slate-600 w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                좌우 교차 레이아웃과 파스텔 톤으로 정리된 보고서 공간. 하위 섹션을 통해 원하는 자료를 빠르게 찾아보세요.
+                선배들이 작성했던 탐구 보고서를 확인해보세요
               </p>
             </div>
           ${ContainerClose()}
@@ -331,17 +360,22 @@
         </div>`
     }
 
-    /* 홈 섹션 */
+    /* ✅ 메인 섹션: 모바일에서는 항상 '이미지 먼저' → '설명' 순서 */
     function alternatingSection(sec, index){
       const left = index % 2 === 0;
       const sampleTo = `#/subject/${encodeSlug(sec.title)}`;
       const imgFile = representativeImage(sec.title);
       const imageBlock = `<img src="${imgFile}" alt="${sec.title} 대표 이미지" class="h-80 w-full object-cover rounded-2xl shadow-soft">`;
 
+      // 모바일(default) order: 이미지(1) -> 텍스트(2)
+      // 데스크톱(md~): 좌우 교차
+      const imgOrder  = left ? 'order-1 md:order-1' : 'order-1 md:order-2';
+      const textOrder = left ? 'order-2 md:order-2' : 'order-2 md:order-1';
+
       return `
         <div class="grid items-center gap-10 md:grid-cols-2">
-          ${left ? imageBlock : ''}
-          <div>
+          <div class="${imgOrder}">${imageBlock}</div>
+          <div class="${textOrder}">
             <h3 class="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">${sec.title}</h3>
             <p class="mt-3 text-slate-600">${sec.title} 영역의 보고서를 큐레이션했습니다. 가장 많이 보는 하위 섹션을 중심으로 정리되어 있습니다.</p>
             <div class="mt-5 flex flex-wrap gap-2">
@@ -354,7 +388,6 @@
               </a>
             </div>
           </div>
-          ${!left ? imageBlock : ''}
         </div>`;
     }
 
@@ -383,7 +416,7 @@
                   ${sec.subs.map((sub, idx) => `
                     <a href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}"
                        class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-800 hover:bg-slate-50 shadow-soft">
-                      ${dotSpan(sec.title, idx)}
+                      ${dotSpan(sec.title, idx, sub)}
                       <span>${sub}</span>
                       <svg viewBox="0 0 24 24" class="ml-auto h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
@@ -396,7 +429,7 @@
                 <div class="sticky top-24 rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
                   <img src="${imgFile}" alt="${sec.title} 대표 이미지" class="w-full h-56 object-cover rounded-xl">
                   <div class="mt-4 text-sm text-slate-600">
-                    ${pillColored(sec.title, sec.title, 0)}
+                    ${pillColored(sec.title, sec.title, 0, sec.title)}
                     <p class="mt-2">세부 과목을 통해 더 구체적인 보고서를 살펴보세요.</p>
                   </div>
                 </div>
@@ -477,11 +510,10 @@
         return;
       }
 
-      const coverImage = representativeImage(report.section);
-      const subIdx     = getSubIndex(report.section, report.subsection);
+      const coverImage   = representativeImage(report.section);
+      const subIdx       = getSubIndex(report.section, report.subsection);
       const isChem1Custom = report.section === '과학' && report.subsection === '화학1' && /-1$/.test(report.id) && report._custom;
-
-      const displayDate = isChem1Custom ? report._custom.dateDisplay : report.createdAt;
+      const displayDate   = isChem1Custom ? report._custom.dateDisplay : report.createdAt;
 
       const cover = `
         <div class="w-full bg-white">
@@ -490,7 +522,7 @@
               <img src="${coverImage}" alt="${report.section} 대표 이미지"
                    class="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-soft">
               <div class="mt-6">
-                ${pillColored(report.section, report.subsection, subIdx)}
+                ${pillColored(report.section, report.subsection, subIdx, report.subsection)}
                 <h1 class="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl">${report.title}</h1>
                 <p class="mt-2 text-slate-700">작성일 ${displayDate}</p>
               </div>
@@ -535,9 +567,9 @@
         </section>`;
     }
 
-    /* 업로드 페이지 */
+    /* 업로드 페이지: 해시로 들어와도 폼으로 이동 */
     function renderUpload(){
-      window.location.href = "https://forms.gle/네_구글폼_링크";
+      window.location.href = UPLOAD_FORM_URL;
     }
 
     // 초기 진입
