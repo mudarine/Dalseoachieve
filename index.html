@@ -31,8 +31,6 @@
     @media (min-width: 640px){ .container-pad{ padding-left: 1.5rem; padding-right: 1.5rem; } }
     @media (min-width: 1024px){ .container-pad{ padding-left: 2rem; padding-right: 2rem; } }
     .shadow-soft { box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 10px 30px rgba(0,0,0,.06);}
-
-    /* 모바일 + 버튼: 작게 & 정중앙 유지 (반응형) */
     .btn-fab { width: clamp(36px, 10vw, 56px); height: clamp(36px, 10vw, 56px); }
     .btn-fab-icon { font-size: clamp(18px, 5vw, 26px); line-height: 1; }
   </style>
@@ -50,8 +48,7 @@
 
         <!-- 중간: 데스크톱 카테고리 내비(가운데 정렬) -->
         <nav id="nav-desktop"
-             class="hidden lg:flex lg:flex-row lg:items-center lg:gap-6 whitespace-nowrap absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-        </nav>
+             class="hidden lg:flex lg:flex-row lg:items-center lg:gap-6 whitespace-nowrap absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></nav>
 
         <!-- 우: 데스크톱 버튼들 -->
         <div class="hidden lg:flex items-center">
@@ -123,7 +120,7 @@
     const OPEN_CHAT_URL = 'https://open.kakao.com/o/gmPOv7Lh';
     const UPLOAD_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform';
 
-    /********************** 데이터 ************************/
+    /********************** 네비 구조 ************************/
     const NAV_STRUCTURE = [
       { title: "국어",   subs: ["국어", "언어와 매체", "화법과 작문", "문학", "독서"] },
       { title: "수학",   subs: ["수(상/하)", "수1", "수2", "확률과 통계", "미적분", "기하", "심화수학", "경제수학"] },
@@ -149,19 +146,20 @@
     const encodeSlug = (s) => encodeURIComponent(s.replaceAll("/", "-").replaceAll(" ", "_"));
     const decodeSlug = (s) => decodeURIComponent(s).replaceAll("_", " ").replaceAll("-", "/");
 
+    /********************** 샘플 + 전역 REPORTS ************************/
     function buildSampleReports(){
       const reports = [];
       NAV_STRUCTURE.forEach((sec, sIdx) => {
         sec.subs.forEach((sub, i) => {
-          for(let k=1; k<=3; k++){
+          for(let k=1; k<=1; k++){
             const id = `${encodeSlug(sec.title)}-${encodeSlug(sub)}-${k}`;
             reports.push({
               id,
               section: sec.title,
               subsection: sub,
               title: `[샘플] ${sub} 보고서 ${k}`,
-              excerpt: `${sub} 영역의 심화 탐구를 요약한 샘플 보고서 ${k}입니다. Caladan 스타일의 넓은 여백과 큰 타이포로 구성된 프리뷰입니다.`,
-              content: `이 페이지는 ${sec.title} > ${sub} 카테고리의 샘플 보고서 ${k} 상세 페이지입니다. 실제 콘텐츠가 들어갈 자리이며, 서론-본론-결론 구조 예시 텍스트와 이미지 플레이스홀더가 포함됩니다.`,
+              excerpt: `${sub} 영역의 샘플 보고서 ${k}입니다.`,
+              content: `${sec.title} > ${sub} 샘플 상세 페이지`,
               createdAt: `2025-0${(sIdx % 6) + 1}-0${(i % 9) + 1}`,
               tags: [sec.title, sub, "탐구", "보고서"],
               toneIdx: (sIdx + i + k) % pastelTones.length
@@ -173,53 +171,54 @@
     }
     const REPORTS = buildSampleReports();
 
-    /* 🔧 특수 커스텀 1: 과학 > 화학1 > 보고서 1 */
-    (function customizeChem1Report1(){
-      const target = REPORTS.find(r =>
-        r.section === '과학' && r.subsection === '화학1' && /-1$/.test(r.id)
-      );
-      if(target){
-        target.title   = '거울성 이성질체 탐구 보고서';
-        target.excerpt = '30618 최지민 선배가 화학1 과목에서 작성했던 활동보고서입니다.';
-        target._custom = {
-          summary: '30618 최지민 선배가 화학1 과목에서 작성했던 활동보고서입니다.',
-          image: '거울성 이성질체.jpg',
-          dateDisplay: '24년 7월 20일',
-          omitConclusion: true,
-          hideHeadings: true
-        };
-      }
-    })();
-
-    /* 🔧 특수 커스텀 2: 기타 > 창의융합과제연구 > 보고서 1  */
-    (function customizeCreativeConvergence1(){
-      const report = REPORTS.find(r =>
-        r.section === '기타' && r.subsection === '창의융합과제연구' && /-1$/.test(r.id)
-      );
-      if(!report) return;
-
-      report.title   = '인공지능의 의약 및 화학공학 분야에서의 혁신';
-      report.excerpt = '30618 최지민 선배가 창의융합과제연구 과목에서 작성했던 활동보고서입니다.';
-      report._custom = {
-        type: 'aiinsight',
-        dateDisplay: '25년 6월 20일',
-        /* ✅ 요청: 요약/본문 헤딩 제거, 동일 문장 1번만 노출 */
-        singleTextOnly: true,
-        text: '30618 최지민 선배가 창의융합과제연구 과목에서 작성했던 활동보고서입니다.',
-        pages: Array.from({length: 37}, (_, i) =>
-          `AI Insight - 인공지능의 의약 및 화학공학 분야에서의 혁신 - 최지민_page-${String(i+1).padStart(4,'0')}.jpg`
-        ),
-        hideHeadings: true,
-        omitConclusion: true
+    /********************** 업로드 규칙(요청 반영) **********************/
+    const DEFAULT_DETAIL_OPTIONS = {
+      hideHeadings: true,    // '요약', '본문' 헤딩 숨김
+      hideBodyText: true,    // 본문 텍스트 숨김
+      omitConclusion: true   // 결론 숨김
+    };
+    function getSubIndex(section, subsection){
+      const sec = NAV_STRUCTURE.find(s => s.title === section);
+      if(!sec) return 0;
+      const idx = sec.subs.indexOf(subsection);
+      return Math.max(0, idx);
+    }
+    function buildUploadExcerpt(student, subsection){
+      return `${student} 선배가 작성한 ${subsection} 활동보고서입니다.`;
+    }
+    function isImageFile(name){ return /\.(png|jpe?g|webp|gif|bmp|tiff?)$/i.test(name || ""); }
+    function renderAttachments(files){
+      if(!files || files.length===0) return '';
+      return files.map(src =>
+        isImageFile(src)
+          ? `<img src="${src}" alt="첨부 이미지" class="w-full h-auto rounded-2xl shadow-soft">`
+          : `<a href="${src}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">첨부 파일 열기</a>`
+      ).join('\n');
+    }
+    /** 새 보고서 추가 */
+    function addReport({section, subsection, title, student, date, files}){
+      const id = `${encodeSlug(section)}-${encodeSlug(subsection)}-${Date.now()}`;
+      const entry = {
+        id, section, subsection,
+        title,
+        excerpt: buildUploadExcerpt(student, subsection),  // 목록 카드 설명
+        content: '',
+        createdAt: date || new Date().toISOString().slice(0,10),
+        tags: [section, subsection, '활동보고서'],
+        toneIdx: Math.floor(Math.random()*pastelTones.length),
+        _upload: { student, subject: subsection, files: files||[], dateDisplay: date }
       };
-    })();
-    /********************** 공통 뷰 유틸 ************************/
+      REPORTS.unshift(entry);     // 최신순 상단 배치
+      return id;
+    }
+    window.addReport = addReport; // 필요 시 콘솔에서도 호출 가능
+
+    /********************** 색상·표시 유틸 **********************/
     const AppEl = document.getElementById('app');
     const ContainerOpen = () => `<div class="mx-auto w-full max-w-7xl container-pad">`;
     const ContainerClose = () => `</div>`;
     const pill = (content) => `<span class="inline-flex items-center rounded-full border border-slate-200 bg-white/70 px-3 py-1 text-xs font-medium text-slate-700 shadow-sm backdrop-blur">${content}</span>`;
 
-    /* ========= 과목별 색상 ========= */
     const colorScales = {
       '국어':      ['bg-rose-200','bg-rose-300','bg-rose-400','bg-rose-500','bg-rose-600','bg-rose-700','bg-rose-800','bg-rose-900'],
       '수학':      ['bg-blue-200','bg-blue-300','bg-blue-400','bg-blue-500','bg-blue-600','bg-blue-700','bg-blue-800','bg-blue-900'],
@@ -249,21 +248,6 @@
       '화학2':     'linear-gradient(135deg, #ddd6fe 0%, #8b5cf6 100%)',
       '지구과학2': 'linear-gradient(135deg, #b39afc 0%, #5b21b6 100%)'
     };
-
-    /* ✅ 새 보고서 기본 상세 표시 정책 */
-    const DEFAULT_DETAIL_OPTIONS = {
-      hideHeadings: true,    // '요약', '본문' 헤딩 숨김
-      hideBodyText: true,    // 본문 텍스트(요약/본문 단락) 숨김
-      omitConclusion: true   // 결론 숨김
-    };
-
-    function getSubIndex(section, subsection){
-      const sec = NAV_STRUCTURE.find(s => s.title === section);
-      if(!sec) return 0;
-      const idx = sec.subs.indexOf(subsection);
-      return Math.max(0, idx);
-    }
-
     function dotSpan(section, idx = 0, subsection = null){
       if(section === '과학'){
         const custom = subsection && sciencePairGradient[subsection];
@@ -279,13 +263,10 @@
         ${dotSpan(section, idx, subsection)}<span class="ml-2">${text}</span>
       </span>`;
     }
-
-    /* 대표 이미지 파일명(.jpg) */
     function representativeImage(section){
       const name = section === '자율/진로' ? '자율,진로' : section;
       return `${name} 대표 이미지.jpg`;
     }
-
     function sectionHeader({kicker, title, desc}){
       return `<div class="mb-8">
         ${kicker ? `<span>${pill(kicker)}</span>` : ''}
@@ -301,7 +282,8 @@
         ${desc ? `<p class="mt-3 text-lg leading-8 text-slate-600">${desc}</p>` : ''}
       </div>`;
     }
-
+  </script>
+  <script>
     /********************** 네비게이션 ************************/
     const navDesktop = document.getElementById('nav-desktop');
     const navMobile  = document.getElementById('nav-mobile');
@@ -357,27 +339,9 @@
 
     renderDesktopNav();
     renderMobileNav();
-    // 모바일 드로어 토글
     const mobileToggle = document.getElementById('mobile-toggle');
     const mobileDrawer = document.getElementById('mobile-drawer');
     mobileToggle.addEventListener('click', () => { mobileDrawer.classList.toggle('hidden'); });
-
-    /********************** 라우터 ************************/
-    function route(){
-      const hash = location.hash || '#/';
-      const parts = hash.replace('#', '').split('/').filter(Boolean);
-      window.scrollTo({ top: 0, behavior: 'instant' });
-      mobileDrawer.classList.add('hidden');
-
-      if(parts.length === 0){ renderHome(); return; }
-      const [page, a, b] = parts; // '', 'subject', 'list', 'report', 'upload'
-      if(page === 'subject' && a) return renderSubject(decodeSlug(a));
-      if(page === 'list' && a && b) return renderList(decodeSlug(a), decodeSlug(b));
-      if(page === 'report' && a) return renderDetail(a);  /* ✅ 괄호 오류 수정 */
-      if(page === 'upload') return renderUpload();
-      renderHome();
-    }
-    window.addEventListener('hashchange', route);
 
     /********************** 페이지 ************************/
     function hero(){
@@ -401,7 +365,6 @@
         </div>`
     }
 
-    /* 메인 섹션 */
     function alternatingSection(sec, index){
       const left = index % 2 === 0;
       const sampleTo = `#/subject/${encodeSlug(sec.title)}`;
@@ -430,7 +393,6 @@
         </div>`;
     }
 
-    /* 과목 선택 페이지 */
     function renderSubject(section){
       const sec = NAV_STRUCTURE.find(s => s.title === section);
       if(!sec){
@@ -478,7 +440,6 @@
         </section>`;
     }
 
-    /* 홈 렌더 */
     function renderHome(){
       AppEl.innerHTML = `
         ${hero()}
@@ -495,7 +456,23 @@
         </section>`;
     }
 
-    /* 목록 */
+    function reportCard(r){
+      return `
+        <a href="#/report/${r.id}" class="group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft transition hover:shadow-md">
+          <div class="h-40 bg-gradient-to-br ${pastelTones[r.toneIdx]}">
+            <div class="h-full w-full bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,.06),transparent_60%),radial-gradient(circle_at_70%_80%,rgba(0,0,0,.05),transparent_60%)] opacity-40"></div>
+          </div>
+          <div class="p-4">
+            <div class="flex items-center gap-2 text-xs text-slate-500"><span>${r.section}</span><span>•</span><span>${r.subsection}</span></div>
+            <h3 class="mt-2 text-base font-semibold text-slate-900 group-hover:underline">${r.title}</h3>
+            <p class="mt-2 text-sm text-slate-600">${r.excerpt}</p>
+            <div class="mt-3 flex flex-wrap gap-2">
+              ${r.tags.slice(0,3).map(t => `<span class="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[11px] text-slate-600">#${t}</span>`).join('')}
+            </div>
+          </div>
+        </a>`;
+    }
+
     function renderList(section, subsection){
       const filtered = REPORTS.filter(r => r.section === section && r.subsection === subsection);
       AppEl.innerHTML = `
@@ -518,24 +495,6 @@
         </section>`;
     }
 
-    function reportCard(r){
-      return `
-        <a href="#/report/${r.id}" class="group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft transition hover:shadow-md">
-          <div class="h-40 bg-gradient-to-br ${pastelTones[r.toneIdx]}">
-            <div class="h-full w-full bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,.06),transparent_60%),radial-gradient(circle_at_70%_80%,rgba(0,0,0,.05),transparent_60%)] opacity-40"></div>
-          </div>
-          <div class="p-4">
-            <div class="flex items-center gap-2 text-xs text-slate-500"><span>${r.section}</span><span>•</span><span>${r.subsection}</span></div>
-            <h3 class="mt-2 text-base font-semibold text-slate-900 group-hover:underline">${r.title}</h3>
-            <p class="mt-2 text-sm text-slate-600">${r.excerpt}</p>
-            <div class="mt-3 flex flex-wrap gap-2">
-              ${r.tags.slice(0,3).map(t => `<span class="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[11px] text-slate-600">#${t}</span>`).join('')}
-            </div>
-          </div>
-        </a>`;
-    }
-
-    /* 상세 */
     function renderDetail(id){
       const report = REPORTS.find(r => r.id === id);
       if(!report){
@@ -552,9 +511,11 @@
       const coverImage   = representativeImage(report.section);
       const subIdx       = getSubIndex(report.section, report.subsection);
       const hasCustom    = !!report._custom;
-      const isChem1Custom = hasCustom && report.section === '과학' && report.subsection === '화학1' && /-1$/.test(report.id) && !report._custom.pages;
-      const isAIInsight  = hasCustom && report.section === '기타' && report.subsection === '창의융합과제연구' && /-1$/.test(report.id) && Array.isArray(report._custom.pages);
-      const displayDate  = hasCustom ? (report._custom.dateDisplay || report.createdAt) : report.createdAt;
+      const isChem1Custom = hasCustom && report.section === '과학' && report.subsection === '화학1' && /-1$/.test(report.id) && !report._custom?.pages;
+      const isAIInsight  = hasCustom && report.section === '기타' && report.subsection === '창의융합과제연구' && /-1$/.test(report.id) && Array.isArray(report._custom?.pages);
+      const isUploaded   = !!report._upload;
+      const displayDate  = isUploaded ? (report._upload.dateDisplay || report.createdAt)
+                        : (hasCustom ? (report._custom.dateDisplay || report.createdAt) : report.createdAt);
 
       const cover = `
         <div class="w-full bg-white">
@@ -572,24 +533,26 @@
         </div>`;
 
       let articleHtml = '';
-
-      if(isChem1Custom){
-        // 화학1: 헤딩 없이 문장 + 이미지 1장
+      if(isUploaded){
+        const line = buildUploadExcerpt(report._upload.student, report._upload.subject);
+        articleHtml = `
+          <p>${line}</p>
+          <div class="mt-6 space-y-6">
+            ${renderAttachments(report._upload.files)}
+          </div>`;
+      } else if(isChem1Custom){
         articleHtml = `
           <p>${report._custom.summary}</p>
           <img src="${report._custom.image}" alt="거울성 이성질체 이미지" class="w-full h-auto rounded-2xl shadow-soft mt-6">`;
       } else if(isAIInsight){
-        // ✅ 창의융합과제연구: 동일 문장 1번만 + 이미지 37장 (헤딩 제거)
         const oneLine = report._custom.text;
         articleHtml = `
           <p>${oneLine}</p>
           <div class="mt-6 space-y-6">
             ${report._custom.pages.map(src => `
-              <img src="${src}" alt="AI Insight 보고서 페이지 이미지" class="w-full h-auto rounded-2xl shadow-soft">`
-            ).join('')}
+              <img src='${src}' alt='AI Insight 보고서 페이지 이미지' class='w-full h-auto rounded-2xl shadow-soft'>`).join('')}
           </div>`;
       } else {
-        // 기본(새 보고서 정책 적용)
         if(!DEFAULT_DETAIL_OPTIONS.hideBodyText){
           articleHtml = `
             ${DEFAULT_DETAIL_OPTIONS.hideHeadings ? '' : '<h2>요약</h2>'}
@@ -598,20 +561,16 @@
             <p>${report.content}</p>
             ${DEFAULT_DETAIL_OPTIONS.omitConclusion ? '' : `
               <h3>결론</h3>
-              <p>연구 질문에 대한 간단한 결론과 후속 탐구 방향을 제시하는 자리입니다. 실제 프로젝트 적용 시 이 부분을 대체하세요.</p>
+              <p>연구 질문에 대한 간단한 결론과 후속 탐구 방향을 제시하는 자리입니다.</p>
             `}`;
         } else {
           articleHtml = ``;
         }
       }
-
-      // 커스텀 후처리(필요 시)
-      if(hasCustom && report._custom.hideHeadings){
-        articleHtml = articleHtml
-          .replace(/<h2>요약<\/h2>/g, '')
-          .replace(/<h2>본문<\/h2>/g, '');
+      if(hasCustom && report._custom?.hideHeadings){
+        articleHtml = articleHtml.replace(/<h2>요약<\/h2>/g, '').replace(/<h2>본문<\/h2>/g, '');
       }
-      if(hasCustom && report._custom.omitConclusion){
+      if(hasCustom && report._custom?.omitConclusion){
         articleHtml = articleHtml.replace(/<h3>결론<\/h3>[\s\S]*?<\/p>/, '');
       }
 
@@ -639,13 +598,63 @@
         </section>`;
     }
 
-    /* 업로드 페이지: 해시로 들어와도 폼으로 이동 */
-    function renderUpload(){
-      window.location.href = UPLOAD_FORM_URL;
-    }
+    /********************** 라우터 ************************/
+    function route(){
+      const hash = location.hash || '#/';
+      const parts = hash.replace('#', '').split('/').filter(Boolean);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      const mobileDrawer = document.getElementById('mobile-drawer');
+      if(mobileDrawer) mobileDrawer.classList.add('hidden');
 
+      if(parts.length === 0){ renderHome(); return; }
+      const [page, a, b] = parts; // '', 'subject', 'list', 'report', 'upload'
+      if(page === 'subject' && a) return renderSubject(decodeSlug(a));
+      if(page === 'list' && a && b) return renderList(decodeSlug(a), decodeSlug(b));
+      if(page === 'report' && a) return renderDetail(a);
+      if(page === 'upload') return window.location.href = UPLOAD_FORM_URL;
+      renderHome();
+    }
+    window.addEventListener('hashchange', route);
+  </script>
+  <script>
     // 초기 진입
     route();
+
+    // === 업로드 항목 #1: 과학/생명과학1/헌팅톤 무도병/30618 최지민 ===
+    (function(){
+      const files = Array.from({length: 9}, (_, i) =>
+        `최지민 생명과학1 헌팅톤 무도병 _page-${String(i+1).padStart(4,'0')}.jpg`
+      );
+      addReport({
+        section: '과학',
+        subsection: '생명과학1',
+        title: '헌팅톤 무도병',
+        student: '30618 최지민',
+        date: '24년 7월 15일',
+        files
+      });
+      // 상세로 바로 이동하려면 ↓ 주석 해제
+      // location.hash = `#/list/${encodeSlug('과학')}/${encodeSlug('생명과학1')}`;
+      // location.hash = `#/report/${id}`;
+    })();
+
+    // === 업로드 항목 #2: 기타/사회문제탐구/간호 인력 부족/30606 배서윤 ===
+    (function(){
+      const files = [
+        '사회 문제 탐구(요양병원·장기요양시설의 간호 인력 부족 문제) - 배서윤_page-0001.jpg',
+        '사회 문제 탐구(요양병원·장기요양시설의 간호 인력 부족 문제) - 배서윤_page-0002.jpg'
+      ];
+      addReport({
+        section: '기타',
+        subsection: '사회문제탐구',
+        title: '요양병원·장기요양시설의 간호 인력 부족 문제',
+        student: '30606 배서윤',
+        date: '25년 5월 17일',
+        files
+      });
+      // 상세 이동 원하면 ↓
+      // location.hash = `#/list/${encodeSlug('기타')}/${encodeSlug('사회문제탐구')}`;
+    })();
   </script>
 </body>
 </html>
