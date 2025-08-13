@@ -101,16 +101,16 @@
 
     /********************** 데이터 ************************/
     const NAV_STRUCTURE = [
-      { title: "국어", subs: ["국어", "언어와 매체", "화법과 작문", "문학", "독서"] },
-      { title: "수학", subs: ["수(상/하)", "수1", "수2", "확률과 통계", "미적분", "기하", "심화수학", "경제수학"] },
-      { title: "영어", subs: ["영어", "영어1", "영어2", "영어 독해와 작문", "진로영어"] },
-      { title: "과학", subs: ["통합과학", "과학탐구실험", "물리학1", "화학1", "생명과학1", "지구과학1", "물리학2", "화학2", "생명과학2", "지구과학2", "생활과 과학"] },
-      { title: "사회", subs: ["통합사회", "사회·문화", "생활과 윤리", "한국지리", "세계지리"] },
+      { title: "국어",   subs: ["국어", "언어와 매체", "화법과 작문", "문학", "독서"] },
+      { title: "수학",   subs: ["수(상/하)", "수1", "수2", "확률과 통계", "미적분", "기하", "심화수학", "경제수학"] },
+      { title: "영어",   subs: ["영어", "영어1", "영어2", "영어 독해와 작문", "진로영어"] },
+      { title: "과학",   subs: ["통합과학", "과학탐구실험", "물리학1", "화학1", "생명과학1", "지구과학1", "물리학2", "화학2", "생명과학2", "지구과학2", "생활과 과학"] },
+      { title: "사회",   subs: ["통합사회", "사회·문화", "생활과 윤리", "한국지리", "세계지리"] },
       { title: "한국사", subs: ["한국사"] },
-      { title: "교양", subs: ["보건", "교육", "심리학", "환경"] },
+      { title: "교양",   subs: ["보건", "교육", "심리학", "환경"] },
       { title: "동아리", subs: ["동아리"] },
       { title: "자율/진로", subs: ["인문·사회", "자연과학", "공학", "의약·보건", "예체능"] },
-      { title: "기타", subs: ["창의융합과제연구", "사회문제탐구", "정보", "체육", "음악", "미술", "한문", "일본어", "컴퓨터 시스템 일반"] },
+      { title: "기타",   subs: ["창의융합과제연구", "사회문제탐구", "정보", "체육", "음악", "미술", "한문", "일본어", "컴퓨터 시스템 일반"] },
     ];
 
     const pastelTones = [
@@ -149,32 +149,61 @@
     }
     const REPORTS = buildSampleReports();
 
+    /* 🔧 특수 케이스: 과학 > 화학1 > 보고서 1 커스텀 (제목/요약/본문 이미지/결론 제거) */
+    (function customizeChem1Report1(){
+      const target = REPORTS.find(r =>
+        r.section === '과학' && r.subsection === '화학1' && /-1$/.test(r.id)
+      );
+      if(target){
+        target.title   = '거울성 이성질체 탐구 보고서';
+        target.excerpt = '30618 최지민 선배가 화학1 과목에서 작성했던 활동보고서입니다.';
+        // 상세 페이지 전용 커스텀 메타
+        target._custom = {
+          summary: '30618 최지민 선배가 화학1 과목에서 작성했던 활동보고서입니다.',
+          image: '거울성 이성질체.jpg',  // 본문에서 전체 표시
+          omitConclusion: true
+        };
+      }
+    })();
+
     /********************** 공통 뷰 유틸 ************************/
     const AppEl = document.getElementById('app');
     const ContainerOpen = () => `<div class="mx-auto w-full max-w-7xl container-pad">`;
     const ContainerClose = () => `</div>`;
-    function pill(content){ return `<span class="inline-flex items-center rounded-full border border-slate-200 bg-white/70 px-3 py-1 text-xs font-medium text-slate-700 shadow-sm backdrop-blur">${content}</span>` }
+    const pill = (content) => `<span class="inline-flex items-center rounded-full border border-slate-200 bg-white/70 px-3 py-1 text-xs font-medium text-slate-700 shadow-sm backdrop-blur">${content}</span>`;
 
-    /* 과목별 동그라미 색상 매핑 */
-    function dotColorClass(section){
-      switch(section){
-        case '국어': return 'bg-red-500';
-        case '수학': return 'bg-blue-500';
-        case '영어': return 'bg-yellow-400';
-        case '과학': return 'bg-violet-500';
-        case '사회': return 'bg-green-500';
-        case '한국사': return 'bg-sky-400';
-        case '교양': return 'bg-gray-400';
-        case '동아리': return 'bg-orange-500';
-        case '자율/진로': return 'bg-white border border-slate-300';
-        case '기타': return 'bg-black';
-        default: return 'bg-slate-300';
-      }
+    /* ========= 과목별 ‘연한→진한’ 팔레트 (과학: 보라계열 정렬) ========= */
+    const colorScales = {
+      '국어':      ['bg-rose-200','bg-rose-300','bg-rose-400','bg-rose-500','bg-rose-600','bg-rose-700','bg-rose-800','bg-rose-900'],
+      '수학':      ['bg-blue-200','bg-blue-300','bg-blue-400','bg-blue-500','bg-blue-600','bg-blue-700','bg-blue-800','bg-blue-900'],
+      '영어':      ['bg-amber-200','bg-amber-300','bg-amber-400','bg-amber-500','bg-amber-600','bg-amber-700','bg-amber-800','bg-amber-900'],
+      '과학':      ['bg-violet-200','bg-violet-300','bg-violet-400','bg-violet-500','bg-violet-600','bg-violet-700','bg-violet-800','bg-violet-900'], /* ← 연→진 정렬 */
+      '사회':      ['bg-emerald-200','bg-emerald-300','bg-emerald-400','bg-emerald-500','bg-emerald-600','bg-emerald-700','bg-emerald-800','bg-emerald-900'],
+      '한국사':    ['bg-sky-200','bg-sky-300','bg-sky-400','bg-sky-500','bg-sky-600','bg-sky-700','bg-sky-800','bg-sky-900'],
+      '교양':      ['bg-gray-200','bg-gray-300','bg-gray-400','bg-gray-500','bg-gray-600','bg-gray-700','bg-gray-800','bg-gray-900'],
+      '동아리':    ['bg-orange-200','bg-orange-300','bg-orange-400','bg-orange-500','bg-orange-600','bg-orange-700','bg-orange-800','bg-orange-900'],
+      '자율/진로': ['bg-white border border-slate-200','bg-white border border-slate-300','bg-white border border-slate-400','bg-white border border-slate-500','bg-white border border-slate-600','bg-white border border-slate-700','bg-white border border-slate-800','bg-white border border-slate-900'],
+      '기타':      ['bg-neutral-200','bg-neutral-300','bg-neutral-400','bg-neutral-500','bg-neutral-600','bg-neutral-700','bg-neutral-800','bg-neutral-900'],
+    };
+
+    function getSubIndex(section, subsection){
+      const sec = NAV_STRUCTURE.find(s => s.title === section);
+      if(!sec) return 0;
+      const idx = sec.subs.indexOf(subsection);
+      return Math.max(0, idx);
     }
-    const dotSpan = (section) =>
-      `<span class="inline-block h-2 w-2 rounded-full ${dotColorClass(section)} shrink-0"></span>`;
 
-    /* 대표 이미지 파일명 매핑: '자율/진로' → '자율,진로 대표 이미지.jfif' */
+    function dotSpan(section, idx = 0){
+      const scale = colorScales[section] || ['bg-slate-300'];
+      const cls = scale[idx % scale.length];
+      return `<span class="inline-block h-2 w-2 rounded-full ${cls} shrink-0"></span>`;
+    }
+    function pillColored(section, text, idx = 0){
+      return `<span class="inline-flex items-center rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs font-semibold text-slate-800 shadow-sm backdrop-blur">
+        ${dotSpan(section, idx)}<span class="ml-2">${text}</span>
+      </span>`;
+    }
+
     function representativeImage(section){
       const name = section === '자율/진로' ? '자율,진로' : section;
       return `${name} 대표 이미지.jfif`;
@@ -182,7 +211,15 @@
 
     function sectionHeader({kicker, title, desc}){
       return `<div class="mb-8">
-        ${kicker ? `<span>${pill(`<span class='mr-2 h-2 w-2 rounded-full bg-slate-300 inline-block'></span>${kicker}`)}</span>` : ''}
+        ${kicker ? `<span>${pill(kicker)}</span>` : ''}
+        <h2 class="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">${title}</h2>
+        ${desc ? `<p class="mt-3 text-lg leading-8 text-slate-600">${desc}</p>` : ''}
+      </div>`;
+    }
+    function sectionHeaderSubColored({section, subsection, title, desc}){
+      const subIdx = getSubIndex(section, subsection);
+      return `<div class="mb-8">
+        ${pillColored(section, subsection, subIdx)}
         <h2 class="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">${title}</h2>
         ${desc ? `<p class="mt-3 text-lg leading-8 text-slate-600">${desc}</p>` : ''}
       </div>`;
@@ -190,9 +227,9 @@
 
     /********************** 네비게이션 ************************/
     const navDesktop = document.getElementById('nav-desktop');
-    const navMobile = document.getElementById('nav-mobile');
+    const navMobile  = document.getElementById('nav-mobile');
 
-    // 소개 링크 제거, 카테고리만 가운데 정렬 + 색상 동그라미 적용
+    // 드롭다운: 세부과목 순서대로 연→진 적용 (과학 포함)
     function renderDesktopNav(){
       navDesktop.innerHTML = `
         ${NAV_STRUCTURE.map(sec => `
@@ -200,9 +237,9 @@
             <button class="inline-flex h-10 items-center text-sm font-medium text-slate-700 hover:text-slate-900">${sec.title}</button>
             <div class="absolute left-0 mt-2 hidden w-80 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl group-hover:block">
               <div class="grid grid-cols-2 gap-2 p-3">
-                ${sec.subs.map(sub => `
+                ${sec.subs.map((sub, idx) => `
                   <a class="group flex items-center gap-2 rounded-lg border border-slate-100 bg-white p-2 text-sm text-slate-700 hover:border-slate-200 hover:bg-slate-50" href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}">
-                    ${dotSpan(sec.title)}
+                    ${dotSpan(sec.title, idx)}
                     ${sub}
                   </a>`).join('')}
               </div>
@@ -214,16 +251,16 @@
 
     function renderMobileNav(){
       navMobile.innerHTML = `
-        ${NAV_STRUCTURE.map((sec, idx) => `
+        ${NAV_STRUCTURE.map((sec, sidx) => `
           <div class="border-b border-slate-100 last:border-none">
-            <button data-idx="${idx}" class="mobile-acc flex w-full items-center justify-between py-3 text-left text-base font-semibold text-slate-900">
+            <button data-idx="${sidx}" class="mobile-acc flex w-full items-center justify-between py-3 text-left text-base font-semibold text-slate-900">
               ${sec.title}
               <svg viewBox="0 0 24 24" class="h-5 w-5 transition-transform" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
             </button>
             <div class="mobile-panel hidden grid grid-cols-2 gap-2 pb-4">
-              ${sec.subs.map(sub => `
+              ${sec.subs.map((sub, idx) => `
                 <a class="group flex items-center gap-2 rounded-lg border border-slate-100 bg-white p-2 text-sm text-slate-700 hover:border-slate-200 hover:bg-slate-50" href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}">
-                  ${dotSpan(sec.title)}
+                  ${dotSpan(sec.title, idx)}
                   ${sub}
                 </a>`).join('')}
             </div>
@@ -234,7 +271,7 @@
       navMobile.querySelectorAll('.mobile-acc').forEach((btn) => {
         btn.addEventListener('click', () => {
           const panel = btn.parentElement.querySelector('.mobile-panel');
-          const icon = btn.querySelector('svg');
+          const icon  = btn.querySelector('svg');
           const isOpen = !panel.classList.contains('hidden');
           navMobile.querySelectorAll('.mobile-panel').forEach(el => el.classList.add('hidden'));
           navMobile.querySelectorAll('.mobile-acc svg').forEach(ic => ic.classList.remove('rotate-180'));
@@ -249,9 +286,7 @@
     // 모바일 드로어 토글
     const mobileToggle = document.getElementById('mobile-toggle');
     const mobileDrawer = document.getElementById('mobile-drawer');
-    mobileToggle.addEventListener('click', () => {
-      mobileDrawer.classList.toggle('hidden');
-    });
+    mobileToggle.addEventListener('click', () => { mobileDrawer.classList.toggle('hidden'); });
 
     /********************** 라우터 ************************/
     function route(){
@@ -260,13 +295,10 @@
       window.scrollTo({ top: 0, behavior: 'instant' });
       mobileDrawer.classList.add('hidden');
 
-      if(parts.length === 0){
-        renderHome();
-        return;
-      }
+      if(parts.length === 0){ renderHome(); return; }
       const [page, a, b] = parts; // '', 'subject', 'list', 'report', 'upload'
-      if(page === 'subject' && a) return renderSubject(decodeSlug(a));               // ← 새 과목 선택 페이지
-      if(page === 'list' && a && b) return renderList(decodeSlug(a), decodeSlug(b)); // 세부과목 보고서 목록
+      if(page === 'subject' && a) return renderSubject(decodeSlug(a));
+      if(page === 'list' && a && b) return renderList(decodeSlug(a), decodeSlug(b));
       if(page === 'report' && a) return renderDetail(a);
       if(page === 'upload') return renderUpload();
       renderHome();
@@ -282,7 +314,6 @@
               <h1 class="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">
                 시원한 여백과 큰 제목. 학습 보고서 아카이브
               </h1>
-              <!-- 오른쪽 끝까지 영역 + 줄바꿈/스크롤 방지 -->
               <p class="mt-6 text-lg leading-8 text-slate-600 w-full whitespace-nowrap overflow-hidden text-ellipsis">
                 좌우 교차 레이아웃과 파스텔 톤으로 정리된 보고서 공간. 하위 섹션을 통해 원하는 자료를 빠르게 찾아보세요.
               </p>
@@ -296,10 +327,10 @@
         </div>`
     }
 
-    /* 홈 섹션: 모든 과목 대표 이미지 사용, '목록 보기'는 과목 선택 페이지로 이동 */
+    /* 홈 섹션: 대표 이미지 사용, '목록 보기'는 과목 선택 페이지로 이동 */
     function alternatingSection(sec, index){
       const left = index % 2 === 0;
-      const sampleTo = `#/subject/${encodeSlug(sec.title)}`; // ← 변경: 과목 선택 페이지
+      const sampleTo = `#/subject/${encodeSlug(sec.title)}`;
       const imgFile = representativeImage(sec.title);
       const imageBlock = `<img src="${imgFile}" alt="${sec.title} 대표 이미지" class="h-80 w-full object-cover rounded-2xl shadow-soft">`;
 
@@ -310,7 +341,7 @@
             <h3 class="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">${sec.title}</h3>
             <p class="mt-3 text-slate-600">${sec.title} 영역의 보고서를 큐레이션했습니다. 가장 많이 보는 하위 섹션을 중심으로 정리되어 있습니다.</p>
             <div class="mt-5 flex flex-wrap gap-2">
-              ${sec.subs.slice(0,6).map(sub => `<a href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}" class="rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700 hover:bg-slate-50">${sub}</a>`).join('')}
+              ${sec.subs.slice(0,6).map((sub) => `<a href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}" class="rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700 hover:bg-slate-50">${sub}</a>`).join('')}
             </div>
             <div class="mt-6">
               <a href="${sampleTo}" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
@@ -323,7 +354,7 @@
         </div>`;
     }
 
-    /* 과목 선택 페이지: 세부 과목 버튼 목록 */
+    /* 과목 선택 페이지: 세부 과목 버튼 목록 (연→진 색 순서) */
     function renderSubject(section){
       const sec = NAV_STRUCTURE.find(s => s.title === section);
       if(!sec){
@@ -336,9 +367,7 @@
           </section>`;
         return;
       }
-
       const imgFile = representativeImage(sec.title);
-
       AppEl.innerHTML = `
         <section class="pt-10">
           ${ContainerOpen()}
@@ -347,10 +376,10 @@
                 <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">${sec.title} 세부 과목 선택</h1>
                 <p class="mt-2 text-slate-600">아래 세부 과목을 선택하면 보고서 목록 페이지로 이동합니다.</p>
                 <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  ${sec.subs.map(sub => `
+                  ${sec.subs.map((sub, idx) => `
                     <a href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}"
                        class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-800 hover:bg-slate-50 shadow-soft">
-                      ${dotSpan(sec.title)}
+                      ${dotSpan(sec.title, idx)}
                       <span>${sub}</span>
                       <svg viewBox="0 0 24 24" class="ml-auto h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
@@ -363,7 +392,7 @@
                 <div class="sticky top-24 rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
                   <img src="${imgFile}" alt="${sec.title} 대표 이미지" class="w-full h-56 object-cover rounded-xl">
                   <div class="mt-4 text-sm text-slate-600">
-                    ${pill(sec.title)}
+                    ${pillColored(sec.title, sec.title, 0)}
                     <p class="mt-2">세부 과목을 통해 더 구체적인 보고서를 살펴보세요.</p>
                   </div>
                 </div>
@@ -373,6 +402,7 @@
         </section>`;
     }
 
+    /********************** 홈 렌더 ************************/
     function renderHome(){
       AppEl.innerHTML = `
         ${hero()}
@@ -395,7 +425,12 @@
       AppEl.innerHTML = `
         <section class="pt-12 pb-24">
           ${ContainerOpen()}
-            ${sectionHeader({kicker: section, title: `${subsection} 보고서 목록`, desc: `${section} > ${subsection} 카테고리의 보고서 프리뷰입니다.`})}
+            ${sectionHeaderSubColored({
+              section,
+              subsection,   /* 세부과목 pill: 이름 + 해당 색 단계 */
+              title: `${subsection} 보고서 목록`,
+              desc: `${section} > ${subsection} 카테고리의 보고서 프리뷰입니다.`
+            })}
             ${filtered.length === 0 ? `
               <div class="rounded-2xl border border-dashed border-slate-300 p-12 text-center">
                 <p class="text-slate-600">아직 등록된 보고서가 없습니다. 곧 업데이트될 예정입니다.</p>
@@ -438,8 +473,9 @@
         return;
       }
 
-      // 상세 커버: 대표 이미지 사용 (국어 보고서1의 HWP 첨부는 제거된 상태)
       const coverImage = representativeImage(report.section);
+      const subIdx     = getSubIndex(report.section, report.subsection);
+
       const cover = `
         <div class="w-full bg-white">
           ${ContainerOpen()}
@@ -447,7 +483,7 @@
               <img src="${coverImage}" alt="${report.section} 대표 이미지"
                    class="w-full h-64 sm:h-80 object-cover rounded-2xl shadow-soft">
               <div class="mt-6">
-                ${pill(`${report.section} • ${report.subsection}`)}
+                ${pillColored(report.section, report.subsection, subIdx)}
                 <h1 class="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl">${report.title}</h1>
                 <p class="mt-2 text-slate-700">작성일 ${report.createdAt}</p>
               </div>
@@ -455,17 +491,27 @@
           ${ContainerClose()}
         </div>`;
 
+      // ✅ 화학1 보고서1 커스텀 렌더링
+      const isChem1Custom = report.section === '과학' && report.subsection === '화학1' && /-1$/.test(report.id) && report._custom;
+
       AppEl.innerHTML = `
         ${cover}
         <section class="py-12">
           ${ContainerOpen()}<div class="grid gap-12 lg:grid-cols-[2fr,1fr]">
             <article class="prose max-w-none prose-slate">
               <h2>요약</h2>
-              <p>${report.excerpt}</p>
+              <p>${isChem1Custom ? report._custom.summary : report.excerpt}</p>
+
               <h2>본문</h2>
-              <p>${report.content}</p>
-              <h3>결론</h3>
-              <p>연구 질문에 대한 간단한 결론과 후속 탐구 방향을 제시하는 자리입니다. 실제 프로젝트 적용 시 이 부분을 대체하세요.</p>
+              ${isChem1Custom
+                ? `<img src="${report._custom.image}" alt="거울성 이성질체.jpg" class="w-full h-auto rounded-2xl shadow-soft">`
+                : `<p>${report.content}</p>`
+              }
+
+              ${isChem1Custom ? '' : `
+                <h3>결론</h3>
+                <p>연구 질문에 대한 간단한 결론과 후속 탐구 방향을 제시하는 자리입니다. 실제 프로젝트 적용 시 이 부분을 대체하세요.</p>
+              `}
             </article>
             <aside>
               <div class="sticky top-24 rounded-2xl border border-slate-200 bg-white p-6 shadow-soft">
