@@ -731,12 +731,23 @@
     addReport({ section:'과학', subsection:'생명과학1', title:'헌팅톤 무도병', student:'30618 최지민', date:'24년 11월 1일', files });
   })();
 
-  // 2) 교양/보건
-  ;(function(){
-    const prefix = '최지민 보건 - 심화탐구(단백질 응집과 오토파지 결함을 중심으로 본 헌팅ㅌ _page-';
-    const files = Array.from({length: 3}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
-    addReport({ section:'교양', subsection:'보건', title:'단백지 응집과 오토파지 결함을 중심으로 본 헌팅턴 무도병의 병태생리와 다중개입형 보건관리 전략', student:'30618 최지민', date:'25년 7월 13일', files });
-  })();
+// 2) 교양/보건
+(function(){
+  const files = [
+    "최지민 보건 - 심화탐구(단백질 응집과 오토파지 결함을 중심으로 본 헌팅ᄐ_page-0001.jpg",
+    "최지민 보건 - 심화탐구(단백질 응집과 오토파지 결함을 중심으로 본 헌팅ᄐ_page-0002.jpg",
+    "최지민 보건 - 심화탐구(단백질 응집과 오토파지 결함을 중심으로 본 헌팅ᄐ_page-0003.jpg"
+  ];
+
+  addReport({
+    section: '교양',
+    subsection: '보건',
+    title: '단백지 응집과 오토파지 결함을 중심으로 본 헌팅턴 무도병의 병태생리와 다중개입형 보건관리 전략',
+    student: '30618 최지민',
+    date: '25년 7월 13일',
+    files
+  });
+})();
 
   // 3) 과학/생명과학2
   ;(function(){
@@ -811,18 +822,25 @@
   // 14) 수학/기하 (단일 파일명 2개)
   ;(function(){
     const files = [
-      '송연제 기하 자기평가서 - 병원 내 휠체어 최적 동선 분석.jpg',
       '송연제 기하 활동보고서.jpg'
     ];
     addReport({ section:'수학', subsection:'기하', title:'병원 내 휠체어 최적 동선 분석', student:'30608 송연제', date:'25년 7월 12일', files });
   })();
 
-  // 15) 국어/언어와 매체
-  ;(function(){
-    const prefix = '송연제 언어와매체 - ‘코드블루’ 방송의 전달 구조 분석_page-';
-    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
-    addReport({ section:'국어', subsection:'언어와 매체', title:'‘코드블루’ 방송의 전달 구조 분석', student:'30608 송연제', date:'25년 7월 11일', files });
-  })();
+ ;(function(){
+  const files = [
+    '송연제 언어와 매체 - ‘코드블루’ 방송의 전달 구조 분석_page-0001.jpg',
+    '송연제 언어와 매체 - ‘코드블루’ 방송의 전달 구조 분석_page-0002.jpg'
+  ];
+  addReport({
+    section: '국어',
+    subsection: '언어와 매체',
+    title: '‘코드블루’ 방송의 전달 구조 분석',
+    student: '30608 송연제',
+    date: '25년 7월 11일',
+    files
+  });
+})();
 
   // 16) 과학/생명과학2
   ;(function(){
@@ -845,12 +863,23 @@
     addReport({ section:'교양', subsection:'심리학', title:'자해 충동은 어떻게 관리될 수 있는가', student:'30608 송연제', date:'25년 5월 12일', files });
   })();
 
-  // 19) 과학/화학2
-  ;(function(){
-    const prefix = '송연제 화학2 - 물의 밀도와 부력(수중 재활 간호) _page-';
-    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
-    addReport({ section:'과학', subsection:'화학2', title:'물의 밀도와 부력(수중 재활 간호)', student:'30608 송연제', date:'25년 4월 4일', files });
-  })();
+// 19) 과학/화학2
+(function(){
+  const files = [
+    "송연제 화학2 - 물의 밀도와 부력(수중 재활 간호)_page-0001.jpg",
+    "송연제 화학2 - 물의 밀도와 부력(수중 재활 간호)_page-0002.jpg"
+  ];
+  
+  addReport({
+    section: '과학',
+    subsection: '화학2',
+    title: '물의 밀도와 부력(수중 재활 간호)',
+    student: '30608 송연제',
+    date: '25년 4월 4일',
+    files
+  });
+})();
+
 
   // 20) 기타/한문
   ;(function(){
@@ -869,7 +898,6 @@
   // 22) 영어/영어 독해와 작문 (단일 파일명 2개)
   ;(function(){
     const files = [
-      '송연제 영어 독해와 작문 - 근대 의료유물과 영어 표현 속 돌봄의 의미.jpg',
       '송연제 영어 독해와 작문 활동보고서.jpg'
     ];
     addReport({ section:'영어', subsection:'영어 독해와 작문', title:'근대 의료유물과 영어 표현 속 돌봄의 의미', student:'30608 송연제', date:'24년 12월 24일', files });
@@ -896,12 +924,26 @@
     addReport({ section:'기타', subsection:'사회문제탐구', title:'간호사에 대한 사회적 인식은 중환자실·응급실 간호사의 이직에 어떤 영향을 미치는가', student:'30608 송연제', date:'25년 7월 6일', files });
   })();
 
-  // 26) 자율/진로/자율
-  ;(function(){
-    const prefix = '__윙가르디움간호사_ 3차 뉴스레터.pdf (1) _page-';
-    const files = Array.from({length: 6}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
-    addReport({ section:'자율/진로', subsection:'자율', title:'진로 뉴스레터(윙가르디움간호사)', student:'30608 송연제', date:'24년 10월 7일', files });
-  })();
+// 26) 자율/진로/자율
+(function(){
+  const files = [
+    "__윙가르디움간호사_ 3차 뉴스레터.pdf (1)_page-0001.jpg",
+    "__윙가르디움간호사_ 3차 뉴스레터.pdf (1)_page-0002.jpg",
+    "__윙가르디움간호사_ 3차 뉴스레터.pdf (1)_page-0003.jpg",
+    "__윙가르디움간호사_ 3차 뉴스레터.pdf (1)_page-0004.jpg",
+    "__윙가르디움간호사_ 3차 뉴스레터.pdf (1)_page-0005.jpg",
+    "__윙가르디움간호사_ 3차 뉴스레터.pdf (1)_page-0006.jpg"
+  ];
+
+  addReport({
+    section: '자율/진로',
+    subsection: '자율',
+    title: '진로 뉴스레터(윙가르디움간호사)',
+    student: '30608 송연제',
+    date: '24년 10월 7일',
+    files
+  });
+})();
 
   // 27) 기타/체육
   ;(function(){
@@ -910,19 +952,43 @@
     addReport({ section:'기타', subsection:'체육', title:'속근섬유와 지근섬유의 피로 회복 과정에서 생리활성물질의 작용 기전 비교 분석', student:'30618 최지민', date:'25년 6월 20일', files });
   })();
 
-  // 28) 자율/진로/공학
-  ;(function(){
-    const prefix = '최지민 진로 - 천연 염료의 광흡수 특성과 전하 전달 효율에 기반한 염료감응형 태양전지(DSSC)의 작동 원리 분석_page-';
-    const files = Array.from({length: 3}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
-    addReport({ section:'자율/진로', subsection:'공학', title:'천연 염료의 광흡수 특성과 전하 전달 효율에 기반한 염료감응형 태양전지(DSSC)의 작동 원리 분석', student:'30618 최지민', date:'25년 7월 19일', files });
-  })();
+// 28) 자율/진로/공학
+(function(){
+  const files = [
+    "최지민 진로 - 천연 염료의 광흡수 특성과 전하 전달 효율에 기반한 염료감응형 태양전지(DSSC)의 작동 원리 분석 _page-0001.jpg",
+    "최지민 진로 - 천연 염료의 광흡수 특성과 전하 전달 효율에 기반한 염료감응형 태양전지(DSSC)의 작동 원리 분석 _page-0002.jpg",
+    "최지민 진로 - 천연 염료의 광흡수 특성과 전하 전달 효율에 기반한 염료감응형 태양전지(DSSC)의 작동 원리 분석 _page-0003.jpg"
+  ];
 
-  // 29) 자율/진로/자율
-  ;(function(){
-    const prefix = '최지민 자율 자율 굿모닝 워킹 탐구 보고서(매일 아침 걷기가 뇌 기능에 미치는 화학적 영향 분석)_page-';
-    const files = Array.from({length: 5}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
-    addReport({ section:'자율/진로', subsection:'자율', title:'자율 굿모닝 워킹 탐구 보고서(매일 아침 걷기가 뇌 기능에 미치는 화학적 영향 분석)', student:'30618 최지민', date:'25년 6월 5일', files });
-  })();
+  addReport({
+    section: '자율/진로',
+    subsection: '공학',
+    title: '천연 염료의 광흡수 특성과 전하 전달 효율에 기반한 염료감응형 태양전지(DSSC)의 작동 원리 분석',
+    student: '30618 최지민',
+    date: '25년 7월 19일',
+    files
+  });
+})();
+
+// 29) 자율/진로/자율
+(function(){
+  const files = [
+    "최지민 자율 굿모닝 워킹 탐구 보고서(매일 아침 걷기가 뇌 기능에 미치는 화학적 영향 분석)_page-0001.jpg",
+    "최지민 자율 굿모닝 워킹 탐구 보고서(매일 아침 걷기가 뇌 기능에 미치는 화학적 영향 분석)_page-0002.jpg",
+    "최지민 자율 굿모닝 워킹 탐구 보고서(매일 아침 걷기가 뇌 기능에 미치는 화학적 영향 분석)_page-0003.jpg",
+    "최지민 자율 굿모닝 워킹 탐구 보고서(매일 아침 걷기가 뇌 기능에 미치는 화학적 영향 분석)_page-0004.jpg",
+    "최지민 자율 굿모닝 워킹 탐구 보고서(매일 아침 걷기가 뇌 기능에 미치는 화학적 영향 분석)_page-0005.jpg"
+  ];
+
+  addReport({
+    section: '자율/진로',
+    subsection: '자율',
+    title: '자율 굿모닝 워킹 탐구 보고서(매일 아침 걷기가 뇌 기능에 미치는 화학적 영향 분석)',
+    student: '30618 최지민',
+    date: '25년 6월 5일',
+    files
+  });
+})();
 
   // 30) 국어/독서
   ;(function(){
@@ -934,7 +1000,6 @@
   // 31) 국어/언어와 매체 (단일 파일명 2개)
   ;(function(){
     const files = [
-      '김지윤 언어와 매체 - 화학공학 산업에서의 광고 언어와 소비자 인식의 상관관계.jpg',
       '김지윤 언어와 매체 활동 보고서.jpg'
     ];
     addReport({ section:'국어', subsection:'언어와 매체', title:'화학공학 산업에서의 광고 언어와 소비자 인식의 상관관계', student:'30603 김지윤', date:'25년 7월 9일', files });
@@ -950,7 +1015,6 @@
   // 33) 교양/보건 (단일 파일명 2개)
   ;(function(){
     const files = [
-      '김지윤 보건 - 보고서.jpg',
       '김지윤 보건 활동 보고서.jpg'
     ];
     addReport({ section:'교양', subsection:'보건', title:'보건 탐구 보고서', student:'30603 김지윤', date:'25년 7월 9일', files });
