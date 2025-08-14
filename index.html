@@ -30,7 +30,7 @@
     .container-pad { padding-left: 1rem; padding-right: 1rem; }
     @media (min-width: 640px){ .container-pad{ padding-left: 1.5rem; padding-right: 1.5rem; } }
     @media (min-width: 1024px){ .container-pad{ padding-left: 2rem; padding-right: 2rem; } }
-    .shadow-soft { box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 10px 30px rgba(0,0,0,.06);}
+    .shadow-soft { box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 10px 30px rgba(0,0,0,.06);} 
     .btn-fab { width: clamp(36px, 10vw, 56px); height: clamp(36px, 10vw, 56px); }
     .btn-fab-icon { font-size: clamp(18px, 5vw, 26px); line-height: 1; }
   </style>
@@ -45,32 +45,24 @@
           <span class="inline-block h-8 w-8 rounded-xl bg-gradient-to-br from-slate-900 to-slate-700"></span>
           <span class="font-semibold tracking-tight">Report Studio</span>
         </a>
-
         <!-- 중간: 데스크톱 카테고리 내비(가운데 정렬) -->
         <nav id="nav-desktop"
              class="hidden lg:flex lg:flex-row lg:items-center lg:gap-6 whitespace-nowrap absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"></nav>
-
         <!-- 우: 데스크톱 버튼들 -->
         <div class="hidden lg:flex items-center">
           <a href="https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform"
              target="_blank" rel="noopener"
-             class="inline-flex h-10 items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800">
-             파일 업로드
-          </a>
+             class="inline-flex h-10 items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800">파일 업로드</a>
           <a href="https://open.kakao.com/o/gmPOv7Lh"
              target="_blank" rel="noopener"
-             class="ml-2 inline-flex h-10 items-center rounded-xl bg-amber-400 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm hover:bg-amber-500">
-             오픈채팅
-          </a>
+             class="ml-2 inline-flex h-10 items-center rounded-xl bg-amber-400 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm hover:bg-amber-500">오픈채팅</a>
         </div>
-
         <!-- Mobile 토글 -->
         <button id="mobile-toggle" class="lg:hidden inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700" aria-label="메뉴 열기">
           <svg viewBox="0 0 24 24" class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </div>
     </div>
-
     <!-- Mobile 드로어 -->
     <div id="mobile-drawer" class="hidden border-t border-slate-200 bg-white lg:hidden">
       <div class="mx-auto w-full max-w-7xl container-pad py-4">
@@ -78,14 +70,10 @@
         <div class="mt-3 flex items-center gap-2">
           <a href="https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform"
              target="_blank" rel="noopener"
-             class="inline-flex h-10 items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 flex-1 justify-center">
-             파일 업로드
-          </a>
+             class="inline-flex h-10 items-center rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-slate-800 flex-1 justify-center">파일 업로드</a>
           <a href="https://open.kakao.com/o/gmPOv7Lh"
              target="_blank" rel="noopener"
-             class="inline-flex h-10 items-center rounded-xl bg-amber-400 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm hover:bg-amber-500 flex-1 justify-center">
-             오픈채팅
-          </a>
+             class="inline-flex h-10 items-center rounded-xl bg-amber-400 px-3 py-2 text-sm font-semibold text-slate-900 shadow-sm hover:bg-amber-500 flex-1 justify-center">오픈채팅</a>
         </div>
       </div>
     </div>
@@ -94,8 +82,7 @@
   <!-- 플로팅 + 버튼 (모바일) -->
   <a href="https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform"
      target="_blank" rel="noopener"
-     class="fixed bottom-6 right-6 z-40 inline-flex items-center justify-center rounded-full bg-slate-900 text-white shadow-soft hover:bg-slate-800 lg:hidden btn-fab"
-     aria-label="업로드">
+     class="fixed bottom-6 right-6 z-40 inline-flex items-center justify-center rounded-full bg-slate-900 text-white shadow-soft hover:bg-slate-800 lg:hidden btn-fab" aria-label="업로드">
     <span class="btn-fab-icon font-bold" aria-hidden="true">+</span>
   </a>
 
@@ -120,7 +107,7 @@
     const OPEN_CHAT_URL = 'https://open.kakao.com/o/gmPOv7Lh';
     const UPLOAD_FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScyX605YkwAsfM9Gh5ruhYuPXE2Hxct_Q9ZeD52cDsuoY5GmQ/viewform';
 
-    /********************** 네비 구조 ************************/
+    /********************** 데이터 ************************/
     const NAV_STRUCTURE = [
       { title: "국어",   subs: ["국어", "언어와 매체", "화법과 작문", "문학", "독서"] },
       { title: "수학",   subs: ["수(상/하)", "수1", "수2", "확률과 통계", "미적분", "기하", "심화수학", "경제수학"] },
@@ -146,20 +133,19 @@
     const encodeSlug = (s) => encodeURIComponent(s.replaceAll("/", "-").replaceAll(" ", "_"));
     const decodeSlug = (s) => decodeURIComponent(s).replaceAll("_", " ").replaceAll("-", "/");
 
-    /********************** 샘플 + 전역 REPORTS ************************/
     function buildSampleReports(){
       const reports = [];
       NAV_STRUCTURE.forEach((sec, sIdx) => {
         sec.subs.forEach((sub, i) => {
-          for(let k=1; k<=1; k++){
+          for(let k=1; k<=2; k++){
             const id = `${encodeSlug(sec.title)}-${encodeSlug(sub)}-${k}`;
             reports.push({
               id,
               section: sec.title,
               subsection: sub,
               title: `[샘플] ${sub} 보고서 ${k}`,
-              excerpt: `${sub} 영역의 샘플 보고서 ${k}입니다.`,
-              content: `${sec.title} > ${sub} 샘플 상세 페이지`,
+              excerpt: `${sub} 영역의 심화 탐구를 요약한 샘플 보고서 ${k}입니다.`,
+              content: `이 페이지는 ${sec.title} > ${sub} 카테고리의 샘플 보고서 ${k} 상세 페이지입니다.`,
               createdAt: `2025-0${(sIdx % 6) + 1}-0${(i % 9) + 1}`,
               tags: [sec.title, sub, "탐구", "보고서"],
               toneIdx: (sIdx + i + k) % pastelTones.length
@@ -171,49 +157,79 @@
     }
     const REPORTS = buildSampleReports();
 
-    /********************** 업로드 규칙(요청 반영) **********************/
-    const DEFAULT_DETAIL_OPTIONS = {
-      hideHeadings: true,    // '요약', '본문' 헤딩 숨김
-      hideBodyText: true,    // 본문 텍스트 숨김
-      omitConclusion: true   // 결론 숨김
-    };
+    /* 🔧 특수 커스텀 1: 과학 > 화학1 > 보고서 1 */
+    (function customizeChem1Report1(){
+      const target = REPORTS.find(r => r.section === '과학' && r.subsection === '화학1' && /-1$/.test(r.id));
+      if(target){
+        target.title   = '거울성 이성질체 탐구 보고서';
+        target.excerpt = '30618 최지민 선배가 화학1 과목에서 작성했던 활동보고서입니다.';
+        target._custom = {
+          summary: '30618 최지민 선배가 화학1 과목에서 작성했던 활동보고서입니다.',
+          image: '거울성 이성질체.jpg',
+          dateDisplay: '24년 7월 20일',
+          omitConclusion: true,
+          hideHeadings: true
+        };
+      }
+    })();
+
+    /* 🔧 특수 커스텀 2: 기타 > 창의융합과제연구 > 보고서 1  */
+    (function customizeCreativeConvergence1(){
+      const report = REPORTS.find(r => r.section === '기타' && r.subsection === '창의융합과제연구' && /-1$/.test(r.id));
+      if(!report) return;
+      report.title   = '인공지능의 의약 및 화학공학 분야에서의 혁신';
+      report.excerpt = '30618 최지민 선배가 창의융합과제연구 과목에서 작성했던 활동보고서입니다.';
+      report._custom = {
+        type: 'aiinsight',
+        dateDisplay: '25년 6월 20일',
+        singleTextOnly: true,
+        text: '30618 최지민 선배가 창의융합과제연구 과목에서 작성했던 활동보고서입니다.',
+        pages: Array.from({length: 12}, (_, i) =>
+          `AI Insight - 인공지능의 의약 및 화학공학 분야에서의 혁신 - 최지민_page-${String(i+1).padStart(4,'0')}.jpg`
+        ),
+        hideHeadings: true,
+        omitConclusion: true
+      };
+    })();
+
+    /********************** 업로드 규칙 유틸 **********************/
+    const DEFAULT_DETAIL_OPTIONS = { hideHeadings: true, hideBodyText: true, omitConclusion: true };
     function getSubIndex(section, subsection){
       const sec = NAV_STRUCTURE.find(s => s.title === section);
       if(!sec) return 0;
       const idx = sec.subs.indexOf(subsection);
       return Math.max(0, idx);
     }
+
     function buildUploadExcerpt(student, subsection){
       return `${student} 선배가 작성한 ${subsection} 활동보고서입니다.`;
     }
     function isImageFile(name){ return /\.(png|jpe?g|webp|gif|bmp|tiff?)$/i.test(name || ""); }
     function renderAttachments(files){
       if(!files || files.length===0) return '';
-      return files.map(src =>
-        isImageFile(src)
-          ? `<img src="${src}" alt="첨부 이미지" class="w-full h-auto rounded-2xl shadow-soft">`
-          : `<a href="${src}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">첨부 파일 열기</a>`
+      return files.map(src => isImageFile(src)
+        ? `<img src="${src}" alt="첨부 이미지" class="w-full h-auto rounded-2xl shadow-soft">`
+        : `<a href="${src}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">첨부 파일 열기</a>`
       ).join('\n');
     }
-    /** 새 보고서 추가 */
     function addReport({section, subsection, title, student, date, files}){
       const id = `${encodeSlug(section)}-${encodeSlug(subsection)}-${Date.now()}`;
       const entry = {
         id, section, subsection,
         title,
-        excerpt: buildUploadExcerpt(student, subsection),  // 목록 카드 설명
+        excerpt: buildUploadExcerpt(student, subsection),
         content: '',
         createdAt: date || new Date().toISOString().slice(0,10),
         tags: [section, subsection, '활동보고서'],
         toneIdx: Math.floor(Math.random()*pastelTones.length),
         _upload: { student, subject: subsection, files: files||[], dateDisplay: date }
       };
-      REPORTS.unshift(entry);     // 최신순 상단 배치
+      REPORTS.unshift(entry);
       return id;
     }
-    window.addReport = addReport; // 필요 시 콘솔에서도 호출 가능
+    window.addReport = addReport;
 
-    /********************** 색상·표시 유틸 **********************/
+    /********************** 색상/표시 유틸 **********************/
     const AppEl = document.getElementById('app');
     const ContainerOpen = () => `<div class="mx-auto w-full max-w-7xl container-pad">`;
     const ContainerClose = () => `</div>`;
@@ -231,7 +247,6 @@
       '기타':      ['bg-neutral-200','bg-neutral-300','bg-neutral-400','bg-neutral-500','bg-neutral-600','bg-neutral-700','bg-neutral-800','bg-neutral-900'],
     };
 
-    /* 과학 기본 그라데이션(연 → 진) + 2과목 페어링 */
     const sciGradients = [
       'linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%)',
       'linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%)',
@@ -259,28 +274,19 @@
       return `<span class="inline-block h-2 w-2 rounded-full ${cls} shrink-0"></span>`;
     }
     function pillColored(section, text, idx = 0, subsection = null){
-      return `<span class="inline-flex items-center rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs font-semibold text-slate-800 shadow-sm backdrop-blur">
-        ${dotSpan(section, idx, subsection)}<span class="ml-2">${text}</span>
-      </span>`;
+      return `<span class="inline-flex items-center rounded-full border border-slate-200 bg-white/80 px-3 py-1 text-xs font-semibold text-slate-800 shadow-sm backdrop-blur">${dotSpan(section, idx, subsection)}<span class="ml-2">${text}</span></span>`;
     }
+
     function representativeImage(section){
       const name = section === '자율/진로' ? '자율,진로' : section;
       return `${name} 대표 이미지.jpg`;
     }
     function sectionHeader({kicker, title, desc}){
-      return `<div class="mb-8">
-        ${kicker ? `<span>${pill(kicker)}</span>` : ''}
-        <h2 class="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">${title}</h2>
-        ${desc ? `<p class="mt-3 text-lg leading-8 text-slate-600">${desc}</p>` : ''}
-      </div>`;
+      return `<div class="mb-8">${kicker ? `<span>${pill(kicker)}</span>` : ''}<h2 class="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">${title}</h2>${desc ? `<p class="mt-3 text-lg leading-8 text-slate-600">${desc}</p>` : ''}</div>`;
     }
     function sectionHeaderSubColored({section, subsection, title, desc}){
       const subIdx = getSubIndex(section, subsection);
-      return `<div class="mb-8">
-        ${pillColored(section, subsection, subIdx, subsection)}
-        <h2 class="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">${title}</h2>
-        ${desc ? `<p class="mt-3 text-lg leading-8 text-slate-600">${desc}</p>` : ''}
-      </div>`;
+      return `<div class="mb-8">${pillColored(section, subsection, subIdx, subsection)}<h2 class="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">${title}</h2>${desc ? `<p class="mt-3 text-lg leading-8 text-slate-600">${desc}</p>` : ''}</div>`;
     }
   </script>
   <script>
@@ -296,31 +302,21 @@
             <div class="absolute left-0 mt-2 hidden w-80 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-xl group-hover:block">
               <div class="grid grid-cols-2 gap-2 p-3">
                 ${sec.subs.map((sub, idx) => `
-                  <a class="group flex items-center gap-2 rounded-lg border border-slate-100 bg-white p-2 text-sm text-slate-700 hover:border-slate-200 hover:bg-slate-50" href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}">
-                    ${dotSpan(sec.title, idx, sub)}
-                    ${sub}
-                  </a>`).join('')}
+                  <a class="group flex items-center gap-2 rounded-lg border border-slate-100 bg-white p-2 text-sm text-slate-700 hover:border-slate-200 hover:bg-slate-50" href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}">${dotSpan(sec.title, idx, sub)}${sub}</a>`).join('')}
               </div>
             </div>
           </div>
         `).join('')}
       `;
     }
-
     function renderMobileNav(){
       navMobile.innerHTML = `
         ${NAV_STRUCTURE.map((sec, sidx) => `
           <div class="border-b border-slate-100 last:border-none">
-            <button data-idx="${sidx}" class="mobile-acc flex w-full items-center justify-between py-3 text-left text-base font-semibold text-slate-900">
-              ${sec.title}
-              <svg viewBox="0 0 24 24" class="h-5 w-5 transition-transform" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
-            </button>
+            <button data-idx="${sidx}" class="mobile-acc flex w-full items-center justify-between py-3 text-left text-base font-semibold text-slate-900">${sec.title}<svg viewBox="0 0 24 24" class="h-5 w-5 transition-transform" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button>
             <div class="mobile-panel hidden grid grid-cols-2 gap-2 pb-4">
               ${sec.subs.map((sub, idx) => `
-                <a class="group flex items-center gap-2 rounded-lg border border-slate-100 bg-white p-2 text-sm text-slate-700 hover:border-slate-200 hover:bg-slate-50" href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}">
-                  ${dotSpan(sec.title, idx, sub)}
-                  ${sub}
-                </a>`).join('')}
+                <a class="group flex items-center gap-2 rounded-lg border border-slate-100 bg-white p-2 text-sm text-slate-700 hover:border-slate-200 hover:bg-slate-50" href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}">${dotSpan(sec.title, idx, sub)}${sub}</a>`).join('')}
             </div>
           </div>
         `).join('')}
@@ -336,7 +332,6 @@
         })
       })
     }
-
     renderDesktopNav();
     renderMobileNav();
     const mobileToggle = document.getElementById('mobile-toggle');
@@ -349,18 +344,12 @@
         <div class="relative isolate overflow-hidden bg-gradient-to-b from-white to-slate-50 pt-12 sm:pt-20 pb-16 sm:pb-28">
           ${ContainerOpen()}
             <div class="w-full max-w-none">
-              <h1 class="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">
-                기록의 전당
-              </h1>
-              <p class="mt-6 text-lg leading-8 text-slate-600 w-full whitespace-nowrap overflow-hidden text-ellipsis">
-                선배들이 작성했던 탐구 보고서를 확인해보세요
-              </p>
+              <h1 class="mt-6 text-4xl font-bold tracking-tight text-slate-900 sm:text-6xl">기록의 전당</h1>
+              <p class="mt-6 text-lg leading-8 text-slate-600 w-full whitespace-nowrap overflow-hidden text-ellipsis">선배들이 작성했던 탐구 보고서를 확인해보세요</p>
             </div>
           ${ContainerClose()}
-
           <div class="absolute inset-x-0 top-[-10rem] -z-10 transform-gpu overflow-hidden blur-3xl">
-            <div class="relative left-1/2 aspect-[1155/678] w-[40rem] sm:w-[48rem] -translate-x-1/2 bg-gradient-to-tr from-sky-100 to-indigo-100 opacity-70"
-                 style="clip-path: polygon(74% 44%, 100% 61%, 97% 26%, 83% 0%, 58% 7%, 44% 26%, 30% 47%, 18% 66%, 0% 53%, 3% 87%, 30% 100%, 60% 100%, 91% 85%);"></div>
+            <div class="relative left-1/2 aspect-[1155/678] w-[40rem] sm:w-[48rem] -translate-x-1/2 bg-gradient-to-tr from-sky-100 to-indigo-100 opacity-70" style="clip-path: polygon(74% 44%, 100% 61%, 97% 26%, 83% 0%, 58% 7%, 44% 26%, 30% 47%, 18% 66%, 0% 53%, 3% 87%, 30% 100%, 60% 100%, 91% 85%);"></div>
           </div>
         </div>`
     }
@@ -370,25 +359,16 @@
       const sampleTo = `#/subject/${encodeSlug(sec.title)}`;
       const imgFile = representativeImage(sec.title);
       const imageBlock = `<img src="${imgFile}" alt="${sec.title} 대표 이미지" class="h-80 w-full object-cover rounded-2xl shadow-soft">`;
-
       const imgOrder  = left ? 'order-1 md:order-1' : 'order-1 md:order-2';
       const textOrder = left ? 'order-2 md:order-2' : 'order-2 md:order-1';
-
       return `
         <div class="grid items-center gap-10 md:grid-cols-2">
           <div class="${imgOrder}">${imageBlock}</div>
           <div class="${textOrder}">
             <h3 class="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">${sec.title}</h3>
             <p class="mt-3 text-slate-600">${sec.title} 영역의 보고서를 큐레이션했습니다. 가장 많이 보는 하위 섹션을 중심으로 정리되어 있습니다.</p>
-            <div class="mt-5 flex flex-wrap gap-2">
-              ${sec.subs.slice(0,6).map((sub) => `<a href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}" class="rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700 hover:bg-slate-50">${sub}</a>`).join('')}
-            </div>
-            <div class="mt-6">
-              <a href="${sampleTo}" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">
-                목록 보기
-                <svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-              </a>
-            </div>
+            <div class="mt-5 flex flex-wrap gap-2">${sec.subs.slice(0,6).map((sub) => `<a href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}" class="rounded-full border border-slate-200 bg-white px-3 py-1 text-sm text-slate-700 hover:bg-slate-50">${sub}</a>`).join('')}</div>
+            <div class="mt-6"><a href="${sampleTo}" class="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">목록 보기<svg viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a></div>
           </div>
         </div>`;
     }
@@ -396,64 +376,24 @@
     function renderSubject(section){
       const sec = NAV_STRUCTURE.find(s => s.title === section);
       if(!sec){
-        AppEl.innerHTML = `
-          <section class="pt-12 pb-24">${ContainerOpen()}
-            <div class="rounded-2xl border border-slate-200 p-10 text-center">
-              <p class="text-slate-600">해당 과목을 찾을 수 없습니다.</p>
-              <div class="mt-4"><a href="#/" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">홈으로</a></div>
-            </div>${ContainerClose()}
-          </section>`;
+        AppEl.innerHTML = `<section class="pt-12 pb-24">${ContainerOpen()}<div class="rounded-2xl border border-slate-200 p-10 text-center"><p class="text-slate-600">해당 과목을 찾을 수 없습니다.</p><div class="mt-4"><a href="#/" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">홈으로</a></div></div>${ContainerClose()}</section>`;
         return;
       }
       const imgFile = representativeImage(sec.title);
       AppEl.innerHTML = `
-        <section class="pt-10">
-          ${ContainerOpen()}
-            <div class="grid gap-10 md:grid-cols-[2fr,1fr] items-start">
-              <div>
-                <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">${sec.title} 세부 과목 선택</h1>
-                <p class="mt-2 text-slate-600">아래 세부 과목을 선택하면 보고서 목록 페이지로 이동합니다.</p>
-                <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  ${sec.subs.map((sub, idx) => `
-                    <a href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}"
-                       class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-800 hover:bg-slate-50 shadow-soft">
-                      ${dotSpan(sec.title, idx, sub)}
-                      <span>${sub}</span>
-                      <svg viewBox="0 0 24 24" class="ml-auto h-4 w-4" fill="none" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
-                      </svg>
-                    </a>
-                  `).join('')}
-                </div>
-              </div>
-              <aside>
-                <div class="sticky top-24 rounded-2xl border border-slate-200 bg-white p-4 shadow-soft">
-                  <img src="${imgFile}" alt="${sec.title} 대표 이미지" class="w-full h-56 object-cover rounded-xl">
-                  <div class="mt-4 text-sm text-slate-600">
-                    ${pillColored(sec.title, sec.title, 0, sec.title)}
-                    <p class="mt-2">세부 과목을 통해 더 구체적인 보고서를 살펴보세요.</p>
-                  </div>
-                </div>
-              </aside>
-            </div>
-          ${ContainerClose()}
-        </section>`;
+        <section class="pt-10">${ContainerOpen()}<div class="grid gap-10 md:grid-cols-[2fr,1fr] items-start"><div>
+          <h1 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">${sec.title} 세부 과목 선택</h1>
+          <p class="mt-2 text-slate-600">아래 세부 과목을 선택하면 보고서 목록 페이지로 이동합니다.</p>
+          <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            ${sec.subs.map((sub, idx) => `<a href="#/list/${encodeSlug(sec.title)}/${encodeSlug(sub)}" class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-800 hover:bg-slate-50 shadow-soft">${dotSpan(sec.title, idx, sub)}<span>${sub}</span><svg viewBox="0 0 24 24" class="ml-auto h-4 w-4" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></a>`).join('')}
+          </div>
+        </div>
+        <aside><div class="sticky top-24 rounded-2xl border border-slate-200 bg-white p-4 shadow-soft"><img src="${imgFile}" alt="${sec.title} 대표 이미지" class="w-full h-56 object-cover rounded-xl"><div class="mt-4 text-sm text-slate-600">${pillColored(sec.title, sec.title, 0, sec.title)}<p class="mt-2">세부 과목을 통해 더 구체적인 보고서를 살펴보세요.</p></div></div></aside>
+        </div>${ContainerClose()}</section>`;
     }
 
     function renderHome(){
-      AppEl.innerHTML = `
-        ${hero()}
-        <section class="py-16">
-          ${ContainerOpen()}
-            ${sectionHeader({
-              title: '학습 보고서 컬렉션',
-              desc: '각 교과 영역의 보고서를 모았습니다. 원하는 하위 섹션으로 이동해 목록을 살펴보세요.'
-            })}
-            <div class="space-y-24">
-              ${NAV_STRUCTURE.map((sec, idx) => alternatingSection(sec, idx)).join('')}
-            </div>
-          ${ContainerClose()}
-        </section>`;
+      AppEl.innerHTML = `${hero()}<section class="py-16">${ContainerOpen()}${sectionHeader({ title: '학습 보고서 컬렉션', desc: '각 교과 영역의 보고서를 모았습니다. 원하는 하위 섹션으로 이동해 목록을 살펴보세요.' })}<div class="space-y-24">${NAV_STRUCTURE.map((sec, idx) => alternatingSection(sec, idx)).join('')}</div>${ContainerClose()}</section>`;
     }
 
     function reportCard(r){
@@ -466,9 +406,7 @@
             <div class="flex items-center gap-2 text-xs text-slate-500"><span>${r.section}</span><span>•</span><span>${r.subsection}</span></div>
             <h3 class="mt-2 text-base font-semibold text-slate-900 group-hover:underline">${r.title}</h3>
             <p class="mt-2 text-sm text-slate-600">${r.excerpt}</p>
-            <div class="mt-3 flex flex-wrap gap-2">
-              ${r.tags.slice(0,3).map(t => `<span class="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[11px] text-slate-600">#${t}</span>`).join('')}
-            </div>
+            <div class="mt-3 flex flex-wrap gap-2">${r.tags.slice(0,3).map(t => `<span class="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[11px] text-slate-600">#${t}</span>`).join('')}</div>
           </div>
         </a>`;
     }
@@ -476,38 +414,15 @@
     function renderList(section, subsection){
       const filtered = REPORTS.filter(r => r.section === section && r.subsection === subsection);
       AppEl.innerHTML = `
-        <section class="pt-12 pb-24">
-          ${ContainerOpen()}
-            ${sectionHeaderSubColored({
-              section,
-              subsection,
-              title: `${subsection} 보고서 목록`,
-              desc: `${section} > ${subsection} 카테고리의 보고서 프리뷰입니다.`
-            })}
-            ${filtered.length === 0 ? `
-              <div class="rounded-2xl border border-dashed border-slate-300 p-12 text-center">
-                <p class="text-slate-600">아직 등록된 보고서가 없습니다. 곧 업데이트될 예정입니다.</p>
-              </div>` : `
-              <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                ${filtered.map(r => reportCard(r)).join('')}
-              </div>`}
-          ${ContainerClose()}
-        </section>`;
+        <section class="pt-12 pb-24">${ContainerOpen()}${sectionHeaderSubColored({ section, subsection, title: `${subsection} 보고서 목록`, desc: `${section} > ${subsection} 카테고리의 보고서 프리뷰입니다.` })}${filtered.length === 0 ? `<div class=\"rounded-2xl border border-dashed border-slate-300 p-12 text-center\"><p class=\"text-slate-600\">아직 등록된 보고서가 없습니다. 곧 업데이트될 예정입니다.</p></div>` : `<div class=\"grid gap-6 sm:grid-cols-2 lg:grid-cols-3\">${filtered.map(r => reportCard(r)).join('')}</div>`}${ContainerClose()}</section>`;
     }
 
     function renderDetail(id){
       const report = REPORTS.find(r => r.id === id);
       if(!report){
-        AppEl.innerHTML = `
-          <section class="pt-12 pb-24">${ContainerOpen()}
-            <div class="rounded-2xl border border-slate-200 p-10 text-center">
-              <p class="text-slate-600">해당 보고서를 찾을 수 없습니다.</p>
-              <div class="mt-4"><a href="#/" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">홈으로</a></div>
-            </div>${ContainerClose()}
-          </section>`;
+        AppEl.innerHTML = `<section class="pt-12 pb-24">${ContainerOpen()}<div class="rounded-2xl border border-slate-200 p-10 text-center"><p class="text-slate-600">해당 보고서를 찾을 수 없습니다.</p><div class="mt-4"><a href="#/" class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800">홈으로</a></div></div>${ContainerClose()}</section>`;
         return;
       }
-
       const coverImage   = representativeImage(report.section);
       const subIdx       = getSubIndex(report.section, report.subsection);
       const hasCustom    = !!report._custom;
@@ -598,20 +513,20 @@
         </section>`;
     }
 
-    /********************** 라우터 ************************/
+    function renderUpload(){ window.location.href = UPLOAD_FORM_URL; }
+
     function route(){
-      const hash = location.hash || '#/';
+      const hash = location.hash || '#/'
       const parts = hash.replace('#', '').split('/').filter(Boolean);
       window.scrollTo({ top: 0, behavior: 'instant' });
       const mobileDrawer = document.getElementById('mobile-drawer');
       if(mobileDrawer) mobileDrawer.classList.add('hidden');
-
       if(parts.length === 0){ renderHome(); return; }
-      const [page, a, b] = parts; // '', 'subject', 'list', 'report', 'upload'
+      const [page, a, b] = parts;
       if(page === 'subject' && a) return renderSubject(decodeSlug(a));
       if(page === 'list' && a && b) return renderList(decodeSlug(a), decodeSlug(b));
       if(page === 'report' && a) return renderDetail(a);
-      if(page === 'upload') return window.location.href = UPLOAD_FORM_URL;
+      if(page === 'upload') return renderUpload();
       renderHome();
     }
     window.addEventListener('hashchange', route);
@@ -620,11 +535,9 @@
     // 초기 진입
     route();
 
-    // === 업로드 항목 #1: 과학/생명과학1/헌팅톤 무도병/30618 최지민 ===
+    // === 업로드 #1: 과학/생명과학1/헌팅톤 무도병 (30618 최지민, 24년 7월 15일) ===
     (function(){
-      const files = Array.from({length: 9}, (_, i) =>
-        `최지민 생명과학1 헌팅톤 무도병 _page-${String(i+1).padStart(4,'0')}.jpg`
-      );
+      const files = Array.from({length: 9}, (_, i) => `최지민 생명과학1 헌팅톤 무도병 _page-${String(i+1).padStart(4,'0')}.jpg`);
       addReport({
         section: '과학',
         subsection: '생명과학1',
@@ -633,12 +546,9 @@
         date: '24년 7월 15일',
         files
       });
-      // 상세로 바로 이동하려면 ↓ 주석 해제
-      // location.hash = `#/list/${encodeSlug('과학')}/${encodeSlug('생명과학1')}`;
-      // location.hash = `#/report/${id}`;
     })();
 
-    // === 업로드 항목 #2: 기타/사회문제탐구/간호 인력 부족/30606 배서윤 ===
+    // === 업로드 #2: 기타/사회문제탐구/간호 인력 부족 (30606 배서윤, 25년 5월 17일) ===
     (function(){
       const files = [
         '사회 문제 탐구(요양병원·장기요양시설의 간호 인력 부족 문제) - 배서윤_page-0001.jpg',
@@ -652,9 +562,54 @@
         date: '25년 5월 17일',
         files
       });
-      // 상세 이동 원하면 ↓
-      // location.hash = `#/list/${encodeSlug('기타')}/${encodeSlug('사회문제탐구')}`;
     })();
+
+    // === 업로드 #3: 수학/기하/벡터를 활용한 분자 구조 모델링과 극성 예측 탐구 (30618 최지민, 25년 7월 21일) ===
+    (function(){
+      const prefix = '최지민 기하 - 벡터를 활용한 분자 구조 모델링과 극성 예측 탐구 - 최지민_page-';
+      const files = Array.from({length: 3}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+      addReport({
+        section: '수학',
+        subsection: '기하',
+        title: '벡터를 활용한 분자 구조 모델링과 극성 예측 탐구',
+        student: '30618 최지민',
+        date: '25년 7월 21일',
+        files
+      });
+    })();
+
+    // === 업로드 #4: 국어/독서/인류의 역사와 함께한 질병, 결핵 (30618 최지민, 25년 7월 30일) ===
+    (function(){
+      const files = [
+        '독서 심화보고서 6반 18번 최지민 - 최지민 (2)_page-0001.jpg',
+        '독서 심화보고서 6반 18번 최지민 - 최지민 (2)_page-0002.jpg'
+      ];
+      addReport({
+        section: '국어',
+        subsection: '독서',
+        title: '인류의 역사와 함께한 질병, 결핵',
+        student: '30618 최지민',
+        date: '25년 7월 30일',
+        files
+      });
+    })();
+
+    // === 업로드 #5: 영어/영어2/스마트 약물 전달… (30618 최지민, 25년 7월 30일) ===
+    (function(){
+      const prefix = '최지민 영어2 심화탐구보고서 - 최지민_page-';
+      const files = Array.from({length: 5}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+      addReport({
+        section: '영어',
+        subsection: '영어2',
+        title: '스마트 약물 전달: IoT와 자기장 반응형 하이드로겔 시스템의 융합',
+        student: '30618 최지민',
+        date: '25년 7월 30일',
+        files
+      });
+    })();
+
+    // 필요한 경우 특정 상세로 자동 이동:
+    // const id = addReport(...); location.hash = `#/report/${id}`;
   </script>
 </body>
 </html>
