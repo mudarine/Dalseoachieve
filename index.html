@@ -122,20 +122,21 @@
       { title: "기타",   subs: ["창의융합과제연구", "사회문제탐구", "정보", "체육", "음악", "미술", "한문", "일본어", "컴퓨터 시스템 일반"] },
     ];
 
-    const pastelTones = [
-      "from-rose-50 to-pink-50",
-      "from-sky-50 to-cyan-50",
-      "from-emerald-50 to-green-50",
-      "from-indigo-50 to-violet-50",
-      "from-amber-50 to-yellow-50",
-      "from-slate-50 to-zinc-50",
+    // 카드 배경 그라데이션(다양하게 순환)
+    const CARD_BG_VARIANTS = [
+      "from-rose-100 to-pink-200", "from-amber-100 to-yellow-200",
+      "from-sky-100 to-cyan-200",  "from-emerald-100 to-green-200",
+      "from-indigo-100 to-violet-200", "from-fuchsia-100 to-pink-200",
+      "from-orange-100 to-amber-200", "from-teal-100 to-emerald-200",
+      "from-blue-100 to-sky-200", "from-lime-100 to-emerald-200",
+      "from-purple-100 to-indigo-200", "from-red-100 to-rose-200"
     ];
 
     const encodeSlug = (s) => encodeURIComponent(s.replaceAll("/", "-").replaceAll(" ", "_"));
     const decodeSlug = (s) => decodeURIComponent(s).replaceAll("_", " ").replaceAll("-", "/");
 
     /********************** 보고서 저장소 ************************/
-    // 샘플 생성 로직 전면 제거 → 빈 배열에서 시작, Part 4에서 addReport(...)로 채움
+    // 샘플 전체 제거 → 빈 배열에서 시작, Part 4에서 addReport(...)로 채움
     const REPORTS = [];
 
     /********************** 업로드 규칙: 문구 통일 ************************/
@@ -148,7 +149,7 @@
       return Math.max(0, idx);
     }
 
-    // ✅ 모든 카드/상세 공통 문구: “(학번 이름) 선배가 작성한 (과목) 탐구보고서입니다.”
+    // ✅ 모든 카드/상세 공통 문구
     function buildUploadExcerpt(student, subsection){
       return `${student} 선배가 작성한 ${subsection} 탐구보고서입니다.`;
     }
@@ -170,10 +171,9 @@
         id, section, subsection,
         title,
         excerpt: buildUploadExcerpt(student, subsection), // 카드 문구
-        content: '',                                      // 본문 텍스트는 숨김(정책), 상세 상단에 같은 문구 노출
+        content: '',                                      // 본문 텍스트 숨김, 상세 상단에 같은 문구 노출
         createdAt: date || new Date().toISOString().slice(0,10),
         tags: [section, subsection, '탐구보고서'],
-        toneIdx: Math.floor(Math.random()*pastelTones.length),
         _upload: { student, subject: subsection, files: files||[], dateDisplay: date }
       };
       REPORTS.unshift(entry);
@@ -403,26 +403,12 @@
         </section>`;
     }
 
-    function renderHome(){
-      AppEl.innerHTML = `
-        ${hero()}
-        <section class="py-16">
-          ${ContainerOpen()}
-            ${sectionHeader({
-              title: '학습 보고서 컬렉션',
-              desc: '각 교과 영역의 보고서를 모았습니다. 원하는 하위 섹션으로 이동해 목록을 살펴보세요.'
-            })}
-            <div class="space-y-24">
-              ${NAV_STRUCTURE.map((sec, idx) => alternatingSection(sec, idx)).join('')}
-            </div>
-          ${ContainerClose()}
-        </section>`;
-    }
-
-    function reportCard(r){
+    // ★ 목록 카드: 색상 순환 적용 (CARD_BG_VARIANTS 사용)
+    function reportCard(r, idxInList = 0){
+      const bg = CARD_BG_VARIANTS[idxInList % CARD_BG_VARIANTS.length];
       return `
         <a href="#/report/${r.id}" class="group block overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-soft transition hover:shadow-md">
-          <div class="h-40 bg-gradient-to-br ${pastelTones[r.toneIdx]}">
+          <div class="h-40 bg-gradient-to-br ${bg}">
             <div class="h-full w-full bg-[radial-gradient(circle_at_30%_20%,rgba(0,0,0,.06),transparent_60%),radial-gradient(circle_at_70%_80%,rgba(0,0,0,.05),transparent_60%)] opacity-40"></div>
           </div>
           <div class="p-4">
@@ -430,7 +416,7 @@
             <h3 class="mt-2 text-base font-semibold text-slate-900 group-hover:underline">${r.title}</h3>
             <p class="mt-2 text-sm text-slate-600">${r.excerpt}</p>
             <div class="mt-3 flex flex-wrap gap-2">
-              ${r.tags.slice(0,3).map(t => `<span class="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[11px] text-slate-600">#${t}</span>`).join('')}
+              ${[r.section, r.subsection, '탐구보고서'].slice(0,3).map(t => `<span class="rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[11px] text-slate-600">#${t}</span>`).join('')}
             </div>
           </div>
         </a>`;
@@ -452,7 +438,7 @@
                 <p class="text-slate-600">아직 등록된 보고서가 없습니다. 곧 업데이트될 예정입니다.</p>
               </div>` : `
               <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                ${filtered.map(r => reportCard(r)).join('')}
+                ${filtered.map((r, idx) => reportCard(r, idx)).join('')}
               </div>`}
           ${ContainerClose()}
         </section>`;
@@ -492,14 +478,13 @@
 
       let articleHtml = '';
       if(isUploaded){
-        const line = buildUploadExcerpt(report._upload.student, report._upload.subject); // 상세 상단 동일 문구
+        const line = buildUploadExcerpt(report._upload.student, report._upload.subject);
         articleHtml = `
           <p>${line}</p>
           <div class="mt-6 space-y-6">
             ${renderAttachments(report._upload.files)}
           </div>`;
       } else {
-        // (안쓰이지만 안정성 차원)
         articleHtml = `<p>${report.excerpt}</p>`;
       }
 
@@ -524,6 +509,22 @@
               </div>
             </aside>
           </div>${ContainerClose()}
+        </section>`;
+    }
+
+    function renderHome(){
+      AppEl.innerHTML = `
+        ${hero()}
+        <section class="py-16">
+          ${ContainerOpen()}
+            ${sectionHeader({
+              title: '학습 보고서 컬렉션',
+              desc: '각 교과 영역의 보고서를 모았습니다. 원하는 하위 섹션으로 이동해 목록을 살펴보세요.'
+            })}
+            <div class="space-y-24">
+              ${NAV_STRUCTURE.map((sec, idx) => alternatingSection(sec, idx)).join('')}
+            </div>
+          ${ContainerClose()}
         </section>`;
     }
 
@@ -721,7 +722,267 @@
         files
       });
     })();
-    
+
+    // === 업로드 #13: 기타/창의융합과제연구/인공지능의 의약 및 화학공학 분야에서의 혁신 (30618 최지민, 25년 6월 20일, 37p .jpg) ===
+    (function(){
+      const prefix = 'AI Insight - 인공지능의 의약 및 화학공학 분야에서의 혁신 - 최지민_page-';
+      const files = Array.from({length: 37}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+      addReport({
+        section: '기타',
+        subsection: '창의융합과제연구',
+        title: '인공지능의 의약 및 화학공학 분야에서의 혁신',
+        student: '30618 최지민',
+        date: '25년 6월 20일',
+        files
+      });
+    })();
+
+    // 1) 과학/생명과학1
+  ;(function(){
+    const prefix = '최지민 생명과학1 헌팅톤 무도병 _page-';
+    const files = Array.from({length: 9}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'과학', subsection:'생명과학1', title:'헌팅톤 무도병', student:'20523 최지민', date:'24년 11월 1일', files });
+  })();
+
+  // 2) 교양/보건
+  ;(function(){
+    const prefix = '최지민 보건 - 심화탐구(단백질 응집과 오토퍼지 결함을 중심으로 본 헌팅ㅌ _page-';
+    const files = Array.from({length: 3}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'교양', subsection:'보건', title:'단백지 응집과 오토파지 결함을 중심으로 본 헌팅턴 무도병의 병태생리와 다중개입형 보건관리 전략', student:'30618 최지민', date:'25년 7월 13일', files });
+  })();
+
+  // 3) 과학/생명과학2
+  ;(function(){
+    const prefix = '최지민 생명과학2 - 단백질, 지방의 산화 경로 - 최지민 (1)_page-';
+    const files = Array.from({length: 3}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'과학', subsection:'생명과학2', title:'단백질, 지방의 산화 경로', student:'30618 최지민', date:'25년 7월 23일', files });
+  })();
+
+  // 4) 과학/지구과학1
+  ;(function(){
+    const prefix = '최지민 지구과학1 우주방사선의 생성과 영향 - 최지민_page-';
+    const files = Array.from({length: 7}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'과학', subsection:'지구과학1', title:'우주방사선의 생성과 영향', student:'20523 최지민', date:'25년 7월 5일', files });
+  })();
+
+  // 5) 영어/영어 독해와 작문
+  ;(function(){
+    const prefix = '최지민 영어 독해와 작문 보고서 - 최지민_page-';
+    const files = Array.from({length: 4}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'영어', subsection:'영어 독해와 작문', title:'동의보감과 Covid-19의 관계를 바탕으로 한방조성물의 실용화 보고서', student:'30618 최지민', date:'25년 7월 10일', files });
+  })();
+
+  // 6) 과학/생명과학1
+  ;(function(){
+    const prefix = '최지민 생명과학1 헌팅톤 무도병의 유전자 신경계 퇴행 - 최지민_page-';
+    const files = Array.from({length: 6}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'과학', subsection:'생명과학1', title:'헌팅톤 무도병의 유전과 신경계 퇴행', student:'20523 최지민', date:'24년 6월 15일', files });
+  })();
+
+  // 7) 과학/생명과학2
+  ;(function(){
+    const prefix = '생명과학2 세포자멸사 심화탐구 - 이유정_page-';
+    const files = Array.from({length: 3}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'과학', subsection:'생명과학2', title:'세포자멸사 심화탐구', student:'30614 이유정', date:'25년 6월 27일', files });
+  })();
+
+  // 8) 과학/생명과학2
+  ;(function(){
+    const prefix = '[생명2]고셔병으로 인한 리소좀 효소 결핍이 오토파지(자가포식)에 미치는 영향_page-';
+    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'과학', subsection:'생명과학2', title:'고셔병으로 인한 리소좀 효소 결핍이 오토파지(자가포식)에 미치는 영향', student:'30606 배서윤', date:'25년 7월 15일', files });
+  })();
+
+  // 9) 교양/심리학
+  ;(function(){
+    const prefix = '[심리] 수용전념치료가 중독 증세에 미치는 영향_page-';
+    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'교양', subsection:'심리학', title:'수용전념치료가 중독 증세에 미치는 영향', student:'30606 배서윤', date:'25년 5월 24일', files });
+  })();
+
+  // 10) 과학/화학1
+  ;(function(){
+    const prefix = '[화학1] 원자흡수분광법(AAS)_page-';
+    const files = Array.from({length: 3}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'과학', subsection:'화학1', title:'원자흡수분광법(AAS)', student:'20605 배서윤', date:'24년 10월 27일', files });
+  })();
+
+  // 11) 영어/영어2
+  ;(function(){
+    const prefix = '송연제 영어2 - 연속 혈당 측정기 설명서에 수동태가 주로 쓰이는 이유_page-';
+    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'영어', subsection:'영어2', title:'연속 혈당 측정기 설명서에 수동태가 주로 쓰이는 이유', student:'30608 송연제', date:'25년 7월 15일', files });
+  })();
+
+  // 12) 국어/독서
+  ;(function(){
+    const prefix = '송연제 독서 - 순자 성악설의 생리학적 해석_page-';
+    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'국어', subsection:'독서', title:'순자 성악설의 생리학적 해석', student:'30608 송연제', date:'25년 7월 16일', files });
+  })();
+
+  // 13) 과학/화학2
+  ;(function(){
+    const prefix = '송연제 화학2 - 고장성 식염수의 치료 효과는 삼투압만의 효과가 아니다._page-';
+    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'과학', subsection:'화학2', title:'고장성 식염수의 치료 효과는 삼투압만의 효과가 아니다.', student:'30608 송연제', date:'25년 7월 13일', files });
+  })();
+
+  // 14) 수학/기하 (단일 파일명 2개)
+  ;(function(){
+    const files = [
+      '송연제 기하 자기평가서 - 병원 내 휠체어 최적 동선 분석.jpg',
+      '송연제 기하 활동보고서.jpg'
+    ];
+    addReport({ section:'수학', subsection:'기하', title:'병원 내 휠체어 최적 동선 분석', student:'30608 송연제', date:'25년 7월 12일', files });
+  })();
+
+  // 15) 국어/언어와 매체
+  ;(function(){
+    const prefix = '송연제 언어와매체 - ‘코드블루’ 방송의 전달 구조 분석_page-';
+    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'국어', subsection:'언어와 매체', title:'‘코드블루’ 방송의 전달 구조 분석', student:'30608 송연제', date:'25년 7월 11일', files });
+  })();
+
+  // 16) 과학/생명과학2
+  ;(function(){
+    const prefix = '송연제 생명과학2 - 세포호흡 재개 후 ROS가 유도하는 세포 자멸사(아포토시스) 기전 분석_page-';
+    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'과학', subsection:'생명과학2', title:'세포호흡 재개 후 ROS가 유도하는 세포 자멸사(아포토시스) 기전 분석', student:'30608 송연제', date:'25년 7월 9일', files });
+  })();
+
+  // 17) 교양/심리학
+  ;(function(){
+    const prefix = 'output_page-';
+    const files = Array.from({length: 5}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'교양', subsection:'심리학', title:'정신질환으로 인해 발현되는 극단적 행동은 증상인가 방어기제인가?', student:'30608 송연제', date:'25년 6월 11일', files });
+  })();
+
+  // 18) 교양/심리학
+  ;(function(){
+    const prefix = '송연제 심리학 - 자해 충동은 어떻게 관리될 수 있는가_page-';
+    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'교양', subsection:'심리학', title:'자해 충동은 어떻게 관리될 수 있는가', student:'30608 송연제', date:'25년 5월 12일', files });
+  })();
+
+  // 19) 과학/화학2
+  ;(function(){
+    const prefix = '송연제 화학2 - 물의 밀도와 부력(수중 재활 간호) _page-';
+    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'과학', subsection:'화학2', title:'물의 밀도와 부력(수중 재활 간호)', student:'30608 송연제', date:'25년 4월 4일', files });
+  })();
+
+  // 20) 기타/한문
+  ;(function(){
+    const prefix = '송연제 한문 - 한문 서예의 심리적 효과와 PTSD 치료에의 활용 가능성_page-';
+    const files = Array.from({length: 3}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'기타', subsection:'한문', title:'한문 서예의 심리적 효과와 PTSD 치료에의 활용 가능성', student:'20607 송연제', date:'24년 5월 10일', files });
+  })();
+
+  // 21) 과학/지구과학1
+  ;(function(){
+    const prefix = '송연제 지구과학1 - 태양 흑점 활동에 의한 기후의 변화가 정신 건강에 미치는 영향_page-';
+    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'과학', subsection:'지구과학1', title:'태양 흑점 활동에 의한 기후의 변화가 정신 건강에 미치는 영향', student:'20607 송연제', date:'24년 12월 26일', files });
+  })();
+
+  // 22) 영어/영어 독해와 작문 (단일 파일명 2개)
+  ;(function(){
+    const files = [
+      '송연제 영어 독해와 작문 - 근대 의료유물과 영어 표현 속 돌봄의 의미.jpg',
+      '송연제 영어 독해와 작문 활동보고서.jpg'
+    ];
+    addReport({ section:'영어', subsection:'영어 독해와 작문', title:'근대 의료유물과 영어 표현 속 돌봄의 의미', student:'20607 송연제', date:'24년 12월 24일', files });
+  })();
+
+  // 23) 동아리/동아리
+  ;(function(){
+    const prefix = '송연제 동아리(사이언스룸) - 쿠커비투릴을 활용한 알지네이트 비드의 약물 방출 시스템 한계 극복 가능성_page-';
+    const files = Array.from({length: 3}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'동아리', subsection:'동아리', title:'쿠커비투릴을 활용한 알지네이트 비드의 약물 방출 시스템 한계 극복 가능성', student:'20607 송연제', date:'24년 12월 22일', files });
+  })();
+
+  // 24) 한국사/한국사
+  ;(function(){
+    const prefix = '송연제 한국사 - 지석영의 종두법 도입이 한국 의료 체계의 근대화에 미친 영향_page-';
+    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'한국사', subsection:'한국사', title:'지석영의 종두법 도입이 한국 의료 체계의 근대화에 미친 영향', student:'20607 송연제', date:'24년 12월 17일', files });
+  })();
+
+  // 25) 기타/사회문제탐구
+  ;(function(){
+    const prefix = '송연제 사회문제탐구 - 간호사에 대한 사회적 인식은 중환자실·응급실 간호사의 이직에 어떤 영향을 미치는가_page-';
+    const files = Array.from({length: 3}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'기타', subsection:'사회문제탐구', title:'간호사에 대한 사회적 인식은 중환자실·응급실 간호사의 이직에 어떤 영향을 미치는가', student:'30608 송연제', date:'25년 7월 6일', files });
+  })();
+
+  // 26) 자율/진로/자율
+  ;(function(){
+    const prefix = '__윙가르디움간호사_ 3차 뉴스레터.pdf (1) _page-';
+    const files = Array.from({length: 6}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'자율/진로', subsection:'자율', title:'진로 뉴스레터(윙가르디움간호사)', student:'30608 송연제', date:'24년 10월 7일', files });
+  })();
+
+  // 27) 기타/체육
+  ;(function(){
+    const prefix = '최지민 체육 - 속근섬유와 지근섬유의 피로 회복 과정에서 생리활성물질의 작용 기전 비교 분석_page-';
+    const files = Array.from({length: 3}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'기타', subsection:'체육', title:'속근섬유와 지근섬유의 피로 회복 과정에서 생리활성물질의 작용 기전 비교 분석', student:'30618 최지민', date:'25년 6월 20일', files });
+  })();
+
+  // 28) 자율/진로/공학
+  ;(function(){
+    const prefix = '최지민 진로 - 천연 염료의 광흡수 특성과 전하 전달 효율에 기반한 염료감응형 태양전지(DSSC)의 작동 원리 분석_page-';
+    const files = Array.from({length: 3}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'자율/진로', subsection:'공학', title:'천연 염료의 광흡수 특성과 전하 전달 효율에 기반한 염료감응형 태양전지(DSSC)의 작동 원리 분석', student:'30618 최지민', date:'25년 7월 19일', files });
+  })();
+
+  // 29) 자율/진로/자율
+  ;(function(){
+    const prefix = '최지민 자율 자율 굿모닝 워킹 탐구 보고서(매일 아침 걷기가 뇌 기능에 미치는 화학적 영향 분석)_page-';
+    const files = Array.from({length: 5}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'자율/진로', subsection:'자율', title:'자율 굿모닝 워킹 탐구 보고서(매일 아침 걷기가 뇌 기능에 미치는 화학적 영향 분석)', student:'30618 최지민', date:'25년 6월 5일', files });
+  })();
+
+  // 30) 국어/독서
+  ;(function(){
+    const prefix = '독서 심화보고서 - 김지윤_page-';
+    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'국어', subsection:'독서', title:'딥러닝과 인간사고에 대한 고찰', student:'30603 김지윤', date:'25년 7월 9일', files });
+  })();
+
+  // 31) 국어/언어와 매체 (단일 파일명 2개)
+  ;(function(){
+    const files = [
+      '김지윤 언어와 매체 - 화학공학 산업에서의 광고 언어와 소비자 인식의 상관관계.jpg',
+      '김지윤 언어와 매체 활동 보고서.jpg'
+    ];
+    addReport({ section:'국어', subsection:'언어와 매체', title:'화학공학 산업에서의 광고 언어와 소비자 인식의 상관관계', student:'30603 김지윤', date:'25년 7월 9일', files });
+  })();
+
+  // 32) 과학/생명과학2
+  ;(function(){
+    const prefix = '김지윤 생명2 - 효소와 산업 촉매의 공통점과 차이점 조사_page-';
+    const files = Array.from({length: 2}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'과학', subsection:'생명과학2', title:'효소와 산업 촉매의 공통점과 차이점 조사', student:'30603 김지윤', date:'25년 7월 20일', files });
+  })();
+
+  // 33) 교양/보건 (단일 파일명 2개)
+  ;(function(){
+    const files = [
+      '김지윤 보건 - 보고서.jpg',
+      '김지윤 보건 활동 보고서.jpg'
+    ];
+    addReport({ section:'교양', subsection:'보건', title:'보건 탐구 보고서', student:'30603 김지윤', date:'25년 7월 9일', files });
+  })();
+
+  // 34) 자율/진로/자율
+  ;(function(){
+    const prefix = '최지민 자율 - 에탄올-수계 혼합물의 상평형과 열역학적 정제 조건이 생체적용성 용매로서의 활용 가능성에 미치는 영향_page-';
+    const files = Array.from({length: 3}, (_, i) => `${prefix}${String(i+1).padStart(4,'0')}.jpg`);
+    addReport({ section:'자율/진로', subsection:'자율', title:'에탄올-수계 혼합물의 상평형과 열역학적 정제 조건이 생체적용성 용매로서의 활용 가능성에 미치는 영향', student:'30618 최지민', date:'25년 7월 16일', files });
+  })();
+  
     // 필요 시 특정 상세로 자동 이동:
     // const id = addReport(...); location.hash = `#/report/${id}`;
   </script>
